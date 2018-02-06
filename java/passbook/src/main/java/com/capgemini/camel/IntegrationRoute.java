@@ -83,8 +83,7 @@ public class IntegrationRoute extends RouteBuilder {
         .log(
             "send to passbook https4://api.passslot.com/v1/passes/pass.slot.developer1/${exchangeProperty.serialNumber}/email:")
         .to(logger)
-        .toD(
-            "https4://api.passslot.com/v1/passes/pass.slot.developer1/${exchangeProperty.serialNumber}/email?bridgeEndpoint=true")
+        .toD("https4://api.passslot.com/v1/passes/pass.slot.developer1/${exchangeProperty.serialNumber}/email")
         .convertBodyTo(String.class).log("Answer from passbook API 2:").to(logger);
 
     from("direct:health").setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200)).setHeader("Content-type")

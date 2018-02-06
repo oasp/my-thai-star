@@ -8,6 +8,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.salesforce.SalesforceComponent;
 import org.apache.camel.component.salesforce.SalesforceEndpointConfig;
 import org.apache.camel.component.salesforce.SalesforceLoginConfig;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,29 +87,27 @@ public class IntegrationRoute extends RouteBuilder {
 
     rest().description("Salesforce PoC Microservice API")
         // create new lead
-        .post("/mythaistar/services/rest/register").to("direct:createlead")
+        .post("/mythaistar/services/rest/bookingmanagement/v1/booking").to("direct:createlead")
         // get leads
         .get("/salesforcepoc/leads").to("direct:getleads")
         // health check
         .get("/salesforcepoc/health").to("direct:health");
 
     // creates new lead in Salesforce with the eMail address from MTS register service call
-    from("direct:createlead").log("POST call for /mythaistar/services/rest/register recieved:").to(this.logger)
+    from("direct:createlead").log("POST call recieved:").to(this.logger)
         // store data from incoming message (from the MTS frontend), and forward the message to the MTS backend
-        .setProperty("email").spel("#{request.body['email']}")
-        /*
-         * //API not implemented in MTS java backend. Uncomment if API is available .marshal().json(JsonLibrary.Jackson)
-         * .log("send to MTS server {{mts.backend.uri}}:").choice().when(simple("{{verbose}}")) .setHeader("Trace",
-         * constant("verbose")).end().to(this.logger) .to("{{mts.backend.uri}}?bridgeEndpoint=true")
-         * .convertBodyTo(String.class).log("Answer from MTS server:").to(this.logger)
-         */
+        .setProperty("email").spel("#{request.body['email']}").setProperty("name")
+        .spel("#{request.body['booking']['name']}").marshal().json(JsonLibrary.Jackson).choice()
+        .when(simple("{{verbose}}")).setHeader("Trace", constant("verbose")).end()
+        .log("send to MTS server {{mts.backend.uri}}:").to(this.logger).to("{{mts.backend.uri}}?bridgeEndpoint=true")
+        .convertBodyTo(String.class).log("Answer from MTS server:").to(this.logger)
         // forfeit the response and send the DTO to the Salesforce target uri to create a new Lead instead
         .process(new LeadProcessor()).log("send to salesforce API:").to(this.logger).to("salesforce:createSObject")
         .log("Answer from salesforce API:").to(this.logger);
 
     // get the list of users (eMail addresses) that have been registered in Salesforce as leads after registering in MTS
     from("direct:getleads").log("GET call for /salesforcepoc/leads received.")
-        .to("salesforce:query?sObjectQuery=SELECT email FROM Lead WHERE lastname = 'Unknown'"
+        .to("salesforce:query?sObjectQuery=SELECT email FROM Lead WHERE company = 'Unknown'"
             + "&sObjectClass=com.capgemini.salesforcepoc.dto.QueryRecordsLead")
         .log("Response from SOQL query recieved:").to(this.logger);
 
