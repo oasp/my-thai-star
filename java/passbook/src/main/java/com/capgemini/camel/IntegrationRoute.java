@@ -15,6 +15,28 @@ import io.swagger.annotations.ApiResponse;
 @Component
 public class IntegrationRoute extends RouteBuilder {
 
+  // Vault Token environment variable provided by Nomad; default value set to empty string
+  @Value("${VAULT_TOKEN:}")
+  private String vaultToken;
+
+  // Vault config data from application properties
+  @Value("${vault.host}")
+  private String vaultHost;
+
+  @Value("${vault.port}")
+  private int vaultPort;
+
+  @Value("$vault.secret.path")
+  private String vaultSecretPath;
+
+  // Passbook config data from application properties
+  @Value("${passbook.auth.key}")
+  private String passbookKey;
+
+  @Value("$passbook.template.no")
+  private String passbookTemplate;
+
+  // Other data from application properties
   @Value("${verbose}")
   private Boolean isVerbose;
 
@@ -26,6 +48,19 @@ public class IntegrationRoute extends RouteBuilder {
     if (this.isVerbose) {
       logger += "?showAll=true&multiline=true";
     }
+
+    // If a vault token is received from Nomad, use the data from Vault,
+    // otherwise keep the data from application.properties
+    // if (this.vaultToken != null && !this.vaultToken.isEmpty()) {
+    // VaultTemplate vault = new VaultTemplate(VaultEndpoint.create(this.vaultHost, this.vaultPort),
+    // new TokenAuthentication(this.vaultToken));
+    //
+    // VaultResponseSupport<VaultSecretDTO> response = vault.read("secret/" + this.vaultSecretPath,
+    // VaultSecretDTO.class);
+    //
+    // this.passbookKey = response.getData().getKey();
+    // this.passbookTemplate = response.getData().getTemplate();
+    // }
 
     restConfiguration().component("jetty").host("{{server.host}}").port("{{server.port}}")
         .bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint", "true")
@@ -73,7 +108,7 @@ public class IntegrationRoute extends RouteBuilder {
         .convertBodyTo(String.class).log("Answer from MTS server:").to(logger).transform()
         .simple("{ \"name\":\"${exchangeProperty.name}\",\"date\":\"${exchangeProperty.bookingDate}\" }")
         .setHeader("Content-type").simple(MediaType.APPLICATION_JSON).setHeader("Authorization")
-        .simple("{{passbook.auth.key}}")
+        .constant("{{passbook.auth.key}}")
         .setHeader(Exchange.HTTP_METHOD, constant(org.apache.camel.component.http4.HttpMethods.POST))
         .log("send to passbook http4://api.passslot.com:80/v1/templates/{{passbook.template.no}}/pass:").to(logger)
         .to("http4://api.passslot.com:80/v1/templates/{{passbook.template.no}}/pass?bridgeEndpoint=true")

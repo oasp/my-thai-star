@@ -14,11 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.salesforcepoc.dto.Lead;
-
 @Component
 public class IntegrationRoute extends RouteBuilder {
 
+  // Vault Token environment variable provided by Nomad; default value set to empty string
+  @Value("${VAULT_TOKEN:}")
+  private String vaultToken;
+
+  // Vault config data from application properties
+  @Value("${vault.host}")
+  private String vaultHost;
+
+  @Value("${vault.port}")
+  private int vaultPort;
+
+  @Value("$vault.secret.path")
+  private String vaultSecretPath;
+
+  // Salesforce config data from application properties
   @Value("${salesforce.auth.uri}")
   private String salesforceAuthUri;
 
@@ -37,6 +50,7 @@ public class IntegrationRoute extends RouteBuilder {
   @Value("${salesforce.auth.client.secret}")
   private String salesforceAuthClientSecret;
 
+  // Other data from application properties
   @Value("${log.uri}")
   private String logger;
 
@@ -53,6 +67,23 @@ public class IntegrationRoute extends RouteBuilder {
       this.logger += "?showAll=true&multiline=true";
     }
 
+    // If a vault token is received from Nomad, use the data from Vault,
+    // otherwise keep the data from application.properties
+    // if (this.vaultToken != null && !this.vaultToken.isEmpty()) {
+    // VaultTemplate vault = new VaultTemplate(VaultEndpoint.create(this.vaultHost, this.vaultPort),
+    // new TokenAuthentication(this.vaultToken));
+    //
+    // VaultResponseSupport<VaultSecretDTO> response = vault.read("secret/" + this.vaultSecretPath,
+    // VaultSecretDTO.class);
+    //
+    // this.salesforceAuthUri = response.getData().getUri();
+    // this.salesforceAuthUsername = response.getData().getUsername();
+    // this.salesforceAuthPassword = response.getData().getPassword();
+    // this.salesforceAuthSecurityToken = response.getData().getSecuritytoken();
+    // this.salesforceAuthClientID = response.getData().getClientID();
+    // this.salesforceAuthClientSecret = response.getData().getClientSecret();
+    // }
+
     SalesforceLoginConfig salesforceLoginConfig = new SalesforceLoginConfig();
     salesforceLoginConfig.setUserName(this.salesforceAuthUsername);
     salesforceLoginConfig.setPassword(this.salesforceAuthPassword + this.salesforceAuthSecurityToken);
@@ -60,7 +91,6 @@ public class IntegrationRoute extends RouteBuilder {
     salesforceLoginConfig.setClientId(this.salesforceAuthClientID);
     salesforceLoginConfig.setClientSecret(this.salesforceAuthClientSecret);
     salesforceLoginConfig.setLazyLogin(false);
-    Lead lead;
 
     SalesforceEndpointConfig salesforceEndpointConfig = new SalesforceEndpointConfig();
     salesforceEndpointConfig.setRawPayload(false);
@@ -96,7 +126,7 @@ public class IntegrationRoute extends RouteBuilder {
     // creates new lead in Salesforce with the eMail address from MTS register service call
     from("direct:createlead").log("POST call recieved:").to(this.logger)
         // store data from incoming message (from the MTS frontend), and forward the message to the MTS backend
-        .setProperty("email").spel("#{request.body['email']}").setProperty("name")
+        .setProperty("email").spel("#{request.body['booking']['email']}").setProperty("name")
         .spel("#{request.body['booking']['name']}").marshal().json(JsonLibrary.Jackson).choice()
         .when(simple("{{verbose}}")).setHeader("Trace", constant("verbose")).end()
         .log("send to MTS server {{mts.backend.uri}}:").to(this.logger).to("{{mts.backend.uri}}?bridgeEndpoint=true")
