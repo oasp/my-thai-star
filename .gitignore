@@ -9,9 +9,9 @@ eclipse-target
 *.project
 *.iml
 .*
-java/samples/server/target/
 
-java/samples/server/eclipse-target/
+**/target/
+**/eclipse-target/
 **/src/generated/
 **/tmp/
 
