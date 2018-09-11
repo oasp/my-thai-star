@@ -17,4 +17,6 @@ public interface UserDao extends ApplicationDao<UserEntity> {
    * @return the {@link PaginatedListTo} with the matching {@link UserEntity} objects.
    */
   PaginatedListTo<UserEntity> findUsers(UserSearchCriteriaTo criteria);
+
+  UserEntity findUserByUsername(String username);
 }

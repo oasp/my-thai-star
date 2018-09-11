@@ -9,7 +9,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class LoginDialogComponent {
 
-  constructor(private dialog: MatDialogRef<LoginDialogComponent>) { }
+  constructor(private dialog: MatDialogRef<LoginDialogComponent>,
+  ) { }
 
   logInSubmit(formValue: FormGroup): void {
     this.dialog.close(formValue);

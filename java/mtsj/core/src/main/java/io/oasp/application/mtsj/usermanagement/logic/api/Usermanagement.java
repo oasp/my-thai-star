@@ -5,6 +5,9 @@ import io.oasp.application.mtsj.usermanagement.logic.api.to.UserRoleEto;
 import io.oasp.application.mtsj.usermanagement.logic.api.to.UserRoleSearchCriteriaTo;
 import io.oasp.application.mtsj.usermanagement.logic.api.to.UserSearchCriteriaTo;
 import io.oasp.module.jpa.common.api.to.PaginatedListTo;
+import io.oasp.application.mtsj.usermanagement.dataaccess.api.UserEntity;
+import io.oasp.application.mtsj.usermanagement.dataaccess.api.dao.UserDao;
+import io.oasp.application.mtsj.general.common.impl.security.BaseUserDetailsService;
 
 /**
  * Interface for Usermanagement component.
@@ -74,5 +77,13 @@ public interface Usermanagement {
    * @return the new {@link UserRoleEto} that has been saved with ID and version.
    */
   UserRoleEto saveUserRole(UserRoleEto userRole);
+
+  /**
+   * Finds a UserEntity in the db and returns a UserEto
+   *
+   * @param username the username from {@link BaseUserDetailsService}
+   * @return the {@link UserRoleEto} generated from the {@link UserEntity returned from {@link UserDao}}
+   */
+  UserEto findUserByUsername(String username);
 
 }

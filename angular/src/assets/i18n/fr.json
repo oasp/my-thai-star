@@ -29,14 +29,12 @@
       "bookingCancel": "Réservation annulée avec succès",
       "orderCancel": "Commande annulée avec succès"
     },
-    "orderID":
-      "Pour passer une commande, il est nécessaire d'avoir un numéro de réservation. Saisissez votre nméro ou réservez une table maintenant.",
+    "orderID": "Pour passer une commande, il est nécessaire d'avoir un numéro de réservation. Saisissez votre nméro ou réservez une table maintenant.",
     "passwordError": "Le mot de passe ne correspond pas.",
     "authAlerts": {
       "loginSuccess": "Accès correct",
       "registerSuccess": "Inscription correcte",
-      "registerFail":
-        "L'enregistrement a échoué, nom d'utilisateur déjà utilisé",
+      "registerFail": "L'enregistrement a échoué, nom d'utilisateur déjà utilisé",
       "logoutSuccess": "Session clôturée avec succès, revenez bientôt!"
     }
   },
@@ -54,6 +52,8 @@
     "guests": "Invités",
     "guestsPH": "Email des invités",
     "comment": "Commentaire",
+    "enterEmployeeId": "Enter employee id",
+    "memberOfStaff": "Member of staff?",
     "total": "Total",
     "referenceNumber": "Numéro de référence"
   },
@@ -70,19 +70,13 @@
       "bookingError": "Erreur de réservation, réessayez plus tard"
     },
     "formErrors": {
-      "nameRequired":
-        "Champ obligatoire. Veuillez inscrire votre nom pour réserver la table",
-      "emailRequired":
-        "Champ obligatoire. Veuillez entrer votre adresse email pour réserver la table",
-      "emailPattern":
-        "Insérez un email valide pour envoyer les informations de réservation, par exemple: email@email.com",
+      "nameRequired": "Champ obligatoire. Veuillez inscrire votre nom pour réserver la table",
+      "emailRequired": "Champ obligatoire. Veuillez entrer votre adresse email pour réserver la table",
+      "emailPattern": "Insérez un email valide pour envoyer les informations de réservation, par exemple: email@email.com",
       "emailFormat": "Le format de l'email n'est pas valide.",
-      "assistantsRequired":
-        "Champ obligatoire. Veuillez indiquer le nombre de participants.",
-      "assistantsMax":
-        "Le nombre de participants ne peut pas surpasser la taille maximale d'une table (8), si vous avez besoin de plus de tables, réservez-les séparément.",
-      "assistantsMin":
-        "On ne peut pas réserver de tables sans participants ou avec un nombre de participants négatif."
+      "assistantsRequired": "Champ obligatoire. Veuillez indiquer le nombre de participants.",
+      "assistantsMax": "Le nombre de participants ne peut pas surpasser la taille maximale d'une table (8), si vous avez besoin de plus de tables, réservez-les séparément.",
+      "assistantsMin": "On ne peut pas réserver de tables sans participants ou avec un nombre de participants négatif."
     }
   },
   "main": {
@@ -103,11 +97,9 @@
   "home": {
     "subtitle": "Plus qu'une nourriture délicieuse",
     "restaurantTitle": "Notre restaurant",
-    "restaurantContent":
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus.",
+    "restaurantContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus.",
     "menuTitle": "Notre menu",
-    "menuContent":
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus."
+    "menuContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus."
   },
   "menu": {
     "filterTitle": "FILTRES",
@@ -135,8 +127,7 @@
     "noSelection": "Aucune commande",
     "dialog": {
       "title": "Ajouter un commentaire",
-      "content":
-        "Ici vous pouvez ajouter un petit commentaire pour nos cuisiniers sur la façon de préparer votre plat."
+      "content": "Ici vous pouvez ajouter un petit commentaire pour nos cuisiniers sur la façon de préparer votre plat."
     }
   },
   "userArea": {

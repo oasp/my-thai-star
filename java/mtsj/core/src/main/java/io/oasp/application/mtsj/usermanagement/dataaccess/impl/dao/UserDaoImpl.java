@@ -95,4 +95,18 @@ public class UserDaoImpl extends ApplicationDaoImpl<UserEntity> implements UserD
     }
   }
 
+  @Override
+  public UserEntity findUserByUsername(String username) {
+
+    UserSearchCriteriaTo searchCriteriaTo = new UserSearchCriteriaTo();
+    searchCriteriaTo.setUsername(username);
+
+    PaginatedListTo<UserEntity>listOfUsers = findUsers(searchCriteriaTo);
+    UserEntity user = listOfUsers.getResult().get(0);
+
+    return user;
+  }
+
+
+
 }

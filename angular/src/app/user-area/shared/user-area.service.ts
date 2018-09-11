@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class UserAreaService {
   private readonly loginRestPath: string = 'login';
   private readonly currentUserRestPath: string = 'security/v1/currentuser/';
-  private readonly registerRestPath: string = 'register';
+  private readonly registerRestPath: string = 'usermanagement/v1/user/register/';
   private readonly changePasswordRestPath: string = 'changepassword';
   authAlerts: any;
 
@@ -57,11 +57,13 @@ export class UserAreaService {
       );
   }
 
-  register(email: string, password: string): void {
+  register(email: string, username: string, password: string, idrole: number): void {
     this.http
       .post(`${environment.restServiceRoot}${this.registerRestPath}`, {
         email: email,
         password: password,
+        username: username,
+        userRoleId: this.assignUserRole(idrole),
       })
       // .map((res: LoginInfo) => res)
       .subscribe(
@@ -103,5 +105,10 @@ export class UserAreaService {
           this.snackBar.openSnack(error.message, 4000, 'red');
         },
       );
+  }
+
+  assignUserRole(userRoleId: number): number {
+    if (userRoleId !== 1) { userRoleId = 0; }
+    return userRoleId;
   }
 }

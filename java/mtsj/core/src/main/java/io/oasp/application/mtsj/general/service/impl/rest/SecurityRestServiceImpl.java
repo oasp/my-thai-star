@@ -38,7 +38,6 @@ public class SecurityRestServiceImpl {
   @GET
   @Path("/currentuser/")
   public UserDetailsClientTo getCurrentUserDetails(@Context HttpServletRequest request) {
-
     return TokenAuthenticationService.getUserdetailsFromToken(request.getHeader("Authorization"));
   }
 

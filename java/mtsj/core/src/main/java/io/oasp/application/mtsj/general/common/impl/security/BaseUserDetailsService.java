@@ -9,12 +9,14 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.oasp.application.mtsj.usermanagement.logic.api.to.UserEto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,6 +68,8 @@ public class BaseUserDetailsService implements UserDetailsService {
 
   private Usermanagement usermanagement;
 
+  private io.oasp.application.mtsj.usermanagement.logic.api.Usermanagement usermanagementCore;
+
   private AuthenticationManagerBuilder amBuilder;
 
   private AccessControlProvider accessControlProvider;
@@ -76,12 +80,13 @@ public class BaseUserDetailsService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
     UserProfile principal = retrievePrincipal(username);
-    Set<GrantedAuthority> authorities = getAuthorities(principal);
+    Set<SimpleGrantedAuthority> authorities = getAuthorities(principal);
     UserDetails user;
     try {
       // amBuilder uses the InMemoryUserDetailsManager, because it is configured in BaseWebSecurityConfig
-      user = getAmBuilder().getDefaultUserDetailsService().loadUserByUsername(username);
-      UserData userData = new UserData(user.getUsername(), user.getPassword(), authorities);
+      AuthenticationManagerBuilder aut = getAmBuilder();
+      UserEto userEto = this.usermanagementCore.findUserByUsername(username);
+      UserData userData = new UserData(userEto.getUsername(), userEto.getPassword(), authorities);
       userData.setUserProfile(principal);
       return userData;
     } catch (Exception e) {
@@ -99,30 +104,23 @@ public class BaseUserDetailsService implements UserDetailsService {
    * @return the associated {@link GrantedAuthority}s
    * @throws AuthenticationException if no principal is retrievable for the given {@code username}
    */
-  protected Set<GrantedAuthority> getAuthorities(UserProfile principal) throws AuthenticationException {
+  protected Set<SimpleGrantedAuthority> getAuthorities(UserProfile principal) throws AuthenticationException {
 
     if (principal == null) {
       LOG.warn("Principal must not be null.");
       throw new IllegalArgumentException();
     }
     // determine granted authorities for spring-security...
-    Set<GrantedAuthority> authorities = new HashSet<>();
+    Set<SimpleGrantedAuthority> authorities = new HashSet<>();
     Collection<String> accessControlIds = this.principalAccessControlProvider.getAccessControlIds(principal);
-    Set<AccessControl> accessControlSet = new HashSet<>();
     for (String id : accessControlIds) {
-      boolean success = this.accessControlProvider.collectAccessControls(id, accessControlSet);
-      if (!success) {
-        LOG.warn("Undefined access control {}.", id);
-      }
-    }
-    for (AccessControl accessControl : accessControlSet) {
-      authorities.add(new AccessControlGrantedAuthority(accessControl));
+      authorities.add(new SimpleGrantedAuthority(id));
     }
     return authorities;
   }
 
   public Set<GrantedAuthority> getAuthoritiesFromList(/* UserProfile principal */List<String> roles)
-      throws AuthenticationException {
+          throws AuthenticationException {
 
     // if (principal == null) {
     // LOG.warn("Principal must not be null.");
@@ -182,6 +180,17 @@ public class BaseUserDetailsService implements UserDetailsService {
     this.usermanagement = usermanagement;
   }
 
+  public io.oasp.application.mtsj.usermanagement.logic.api.Usermanagement getUsermanagementCore() {
+
+    return this.usermanagementCore;
+  }
+
+  @Inject
+  public void setUsermanagementCore(io.oasp.application.mtsj.usermanagement.logic.api.Usermanagement usermanagementCore) {
+
+    this.usermanagementCore = usermanagementCore;
+  }
+
   /**
    * @return amBuilder
    */
@@ -229,7 +238,7 @@ public class BaseUserDetailsService implements UserDetailsService {
    */
   @Inject
   public void setPrincipalAccessControlProvider(
-      PrincipalAccessControlProvider<UserProfile> principalAccessControlProvider) {
+          PrincipalAccessControlProvider<UserProfile> principalAccessControlProvider) {
 
     this.principalAccessControlProvider = principalAccessControlProvider;
   }

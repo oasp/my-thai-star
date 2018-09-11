@@ -2,7 +2,7 @@
 
   <mat-tab [label]="'userArea.loginTitle' | translate">
     <form (ngSubmit)="logInSubmit(loginForm.form.value)" class="pad" #loginForm="ngForm">
-      <div layout= "column" flex>
+      <div layout="column" flex>
         <mat-form-field color="accent" flex>
           <input matInput [placeholder]="'formFields.username' | translate" ngModel name="username" required>
         </mat-form-field>
@@ -13,14 +13,15 @@
       </div>
       <div style="text-align: right">
         <button mat-button mat-dialog-close class="text-upper">{{'buttons.cancel' | translate}}</button>
-        <button mat-button type="submit" [disabled]="!loginForm.form.valid" color="accent" class="text-upper">{{'buttons.login' | translate}}</button>
+        <button mat-button type="submit" [disabled]="!loginForm.form.valid" color="accent" class="text-upper">{{'buttons.login'
+          | translate}}</button>
       </div>
     </form>
   </mat-tab>
 
   <mat-tab [label]="'userArea.signupTitle' | translate">
     <form (ngSubmit)="signInSubmit(signForm.form.value)" class="pad" #signForm="ngForm">
-      <div layout= "column" class="push-bottom-sm" flex>
+      <div layout="column" class="push-bottom-sm" flex>
 
         <mat-form-field color="accent" flex>
           <input matInput [placeholder]="'formFields.email' | translate" ngModel name="email" required validateEmail>
@@ -28,20 +29,33 @@
         </mat-form-field>
 
         <mat-form-field color="accent" flex>
-          <input matInput type="password" name="password" [placeholder]="'formFields.password' | translate" ngModel required validateEqual="confirmPassword" reverse="true" #password="ngModel">
+          <input matInput [placeholder]="'formFields.username' | translate" ngModel name="username" required>
         </mat-form-field>
 
         <mat-form-field color="accent" flex>
-          <input matInput type="password" name="confirmPassword" [placeholder]="'formFields.confirmPassword' | translate" ngModel required validateEqual="password" reverse="false" #confirmPassword="ngModel">
+          <input matInput type="password" name="password" [placeholder]="'formFields.password' | translate" ngModel required validateEqual="confirmPassword"
+            reverse="true" #password="ngModel">
+        </mat-form-field>
+
+        <mat-form-field color="accent" flex>
+          <input matInput type="password" name="confirmPassword" [placeholder]="'formFields.confirmPassword' | translate" ngModel required
+            validateEqual="password" reverse="false" #confirmPassword="ngModel">
           <mat-error>{{'alerts.passwordError' | translate}}</mat-error>
         </mat-form-field>
+
+        <mat-checkbox #staffRole name="idrole">{{'formFields.memberOfStaff' | translate}}</mat-checkbox>
+        <mat-form-field *ngIf="staffRole.checked" color="accent" flex>
+          <input matInput type="number" ngModel name="idrole" [placeholder]="'formFields.enterEmployeeId' | translate">
+        </mat-form-field>
+
       </div>
 
       <mat-checkbox #termsd>{{'formFields.terms' | translate}}</mat-checkbox>
 
       <div class="align-right" flex>
         <button mat-button mat-dialog-close class="text-upper">{{'buttons.cancel' | translate}}</button>
-        <button mat-button type="submit" [disabled]="!(signForm.form.valid && termsd.checked)" color="accent" class="text-upper">{{'buttons.register' | translate}}</button>
+        <button mat-button type="submit" [disabled]="!(signForm.form.valid && termsd.checked)" color="accent" class="text-upper">{{'buttons.register'
+          | translate}}</button>
       </div>
     </form>
   </mat-tab>

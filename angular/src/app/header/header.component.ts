@@ -88,7 +88,7 @@ export class HeaderComponent {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         if (result.email) {
-          this.userService.register(result.email, result.password);
+          this.userService.register(result.email, result.username, result.password, result.idrole);
         } else {
           this.userService.login(result.username, result.password);
         }

@@ -29,8 +29,7 @@
       "bookingCancel": "Booking succesfully canceled",
       "orderCancel": "Order succesfully canceled"
     },
-    "orderID":
-      "To order a menu it is necessary to obtain a booking id. Either you enter your already known booking id or you book a table",
+    "orderID": "To order a menu it is necessary to obtain a booking id. Either you enter your already known booking id or you book a table",
     "passwordError": "Password Mismatch",
     "authAlerts": {
       "loginSuccess": "Login successful",
@@ -54,6 +53,8 @@
     "guestsPH": "Enter invitation email",
     "comment": "Comment",
     "total": "Total",
+    "enterEmployeeId": "Enter employee id",
+    "memberOfStaff": "Member of staff?",
     "referenceNumber": "Reference number"
   },
   "bookTable": {
@@ -71,14 +72,11 @@
     "formErrors": {
       "nameRequired": "Required. Please insert a name to reserve the table",
       "emailRequired": "Required. Please insert an email to reserve the table",
-      "emailPattern":
-        "Insert a valid email address to send reservation data. e.g. email@email.com.",
+      "emailPattern": "Insert a valid email address to send reservation data. e.g. email@email.com.",
       "emailFormat": "Email format not valid",
       "assistantsRequired": "Required. Please insert the number of assistants.",
-      "assistantsMax":
-        "You cannot reserve more assistants than the size of the biggest table (8), if you need more tables, make more bookings.",
-      "assistantsMin":
-        "You cannot reserve an empty or negative number of assistants"
+      "assistantsMax": "You cannot reserve more assistants than the size of the biggest table (8), if you need more tables, make more bookings.",
+      "assistantsMin": "You cannot reserve an empty or negative number of assistants"
     }
   },
   "main": {
@@ -99,11 +97,9 @@
   "home": {
     "subtitle": "More than just delicious food",
     "restaurantTitle": "Our restaurant",
-    "restaurantContent":
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus.",
+    "restaurantContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus.",
     "menuTitle": "Our menu",
-    "menuContent":
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus."
+    "menuContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum tellus eget volutpat porta. Duis pellentesque velit venenatis, tincidunt ligula ac, rhoncus felis. Donec aliquam nulla id turpis dignissim laoreet. Vestibulum sit amet ante eu lacus convallis lobortis sit amet eu orci. Nam vitae felis ac nisi accumsan faucibus."
   },
   "menu": {
     "filterTitle": "FILTERS",
@@ -131,8 +127,7 @@
     "noSelection": "You have not selected any order",
     "dialog": {
       "title": "Add a comment",
-      "content":
-        "Here you can add a short comment to our cookers about how to prepare your dish"
+      "content": "Here you can add a short comment to our cookers about how to prepare your dish"
     }
   },
   "userArea": {

@@ -45,6 +45,16 @@ public interface UsermanagementRestService {
   public UserEto saveUser(UserEto user);
 
   /**
+   * Delegates to {@link Usermanagement#saveUser}.
+   *
+   * @param user the {@link UserEto} to be saved
+   * @return the recently created {@link UserEto}
+   */
+  @POST
+  @Path("/user/register/")
+  public UserEto registerUser(UserEto user);
+
+  /**
    * Delegates to {@link Usermanagement#deleteUser}.
    *
    * @param id ID of the {@link UserEto} to be deleted
