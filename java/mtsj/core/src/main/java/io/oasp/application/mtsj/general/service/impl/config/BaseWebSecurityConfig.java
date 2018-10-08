@@ -29,6 +29,8 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
   @Value("${security.cors.enabled}")
   boolean corsEnabled = true;
 
+  long maxAge = 3600L;
+
   @Inject
   private UserDetailsService userDetailsService;
 
@@ -46,6 +48,7 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
     config.addAllowedMethod("POST");
     config.addAllowedMethod("DELETE");
     config.addAllowedMethod("PATCH");
+    config.setMaxAge(this.maxAge);
     source.registerCorsConfiguration("/**", config);
     return new CorsFilter(source);
   }
@@ -62,7 +65,7 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
     "/services/rest/bookingmanagement/v1/booking/cancel/**",
     "/services/rest/bookingmanagement/v1/invitedguest/accept/**",
     "/services/rest/bookingmanagement/v1/invitedguest/decline/**",
-    "/services/rest/ordermanagement/v1/order/cancelorder/**"};
+    "/services/rest/ordermanagement/v1/order/cancelorder/**" };
 
     http.userDetailsService(this.userDetailsService).csrf().disable().exceptionHandling().and().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
