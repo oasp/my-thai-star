@@ -8,8 +8,8 @@ import { ReservationCockpitComponent } from './cockpit-area/reservation-cockpit/
 import { OrderCockpitComponent } from './cockpit-area/order-cockpit/order-cockpit.component';
 import { EmailConfirmationsComponent } from './email-confirmations/email-confirmations.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
-
 import { AuthGuardService } from './core/authentication/auth-guard.service';
+import { environment } from 'environments/environment';
 
 const appRoutes: Routes = [
   { path: 'restaurant', component: HomeComponent, pathMatch: 'full' },
@@ -34,7 +34,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true }, // <-- debugging purposes only
+      { enableTracing: environment.routerEnableTracing }, 
     ),
   ],
   exports: [RouterModule],
