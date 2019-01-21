@@ -11,6 +11,9 @@ main.js
 src/**/*.js
 *.js.map
 
+#version file
+src/assets/version.json
+
 # dependencies
 /node_modules
 /node
