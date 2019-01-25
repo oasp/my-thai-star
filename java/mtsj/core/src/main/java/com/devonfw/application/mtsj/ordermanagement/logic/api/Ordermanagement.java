@@ -94,7 +94,6 @@ public interface Ordermanagement {
    * @param criteria the {@link OrderLineSearchCriteriaTo}.
    * @return the {@link List} of matching {@link OrderLineEto}s.
    */
-  // PaginatedListTo<OrderLineEto> findOrderLineEtos(OrderLineSearchCriteriaTo criteria);
   Page<OrderLineCto> findOrderLineCtos(OrderLineSearchCriteriaTo criteria);
 
   /**

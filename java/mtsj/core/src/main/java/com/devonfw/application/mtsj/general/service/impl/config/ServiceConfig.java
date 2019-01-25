@@ -38,17 +38,15 @@ public class ServiceConfig extends WsConfigurerAdapter {
 	private static final Logger LOG = LoggerFactory.getLogger(ServiceConfig.class);
 
 	/** The services "folder" of an URL. */
-	public static final String URL_FOLDER_SERVICES = "services";
-
-	public static final String URL_PATH_SERVICES = "/" + URL_FOLDER_SERVICES;
+	public static final String URL_FOLDER_SERVICES = "/services";
 
 	public static final String URL_FOLDER_REST = "/rest";
 
 	public static final String URL_FOLDER_WEB_SERVICES = "/ws";
 
-	public static final String URL_PATH_REST_SERVICES = URL_PATH_SERVICES + "/" + URL_FOLDER_REST;
+	public static final String URL_PATH_REST_SERVICES = URL_FOLDER_SERVICES.concat(URL_FOLDER_REST);
 
-	public static final String URL_PATH_WEB_SERVICES = URL_PATH_SERVICES + "/" + URL_FOLDER_WEB_SERVICES;
+	public static final String URL_PATH_WEB_SERVICES = URL_FOLDER_SERVICES.concat(URL_FOLDER_WEB_SERVICES);
 
 	@Value("${security.expose.error.details}")
 	boolean exposeInternalErrorDetails;
@@ -75,8 +73,7 @@ public class ServiceConfig extends WsConfigurerAdapter {
 	public ServletRegistrationBean servletRegistrationBean() {
 
 		CXFServlet cxfServlet = new CXFServlet();
-		ServletRegistrationBean servletRegistration = new ServletRegistrationBean(cxfServlet, URL_PATH_SERVICES + "/*");
-		return servletRegistration;
+		return new ServletRegistrationBean(cxfServlet, URL_FOLDER_SERVICES + "/*");
 	}
 
 	@Bean

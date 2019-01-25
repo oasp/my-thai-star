@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
-import com.devonfw.application.mtsj.mailservice.Mail;
-
 /**
  * Mock class for Mail Service. The mail content is printed as a Log
  *
@@ -29,9 +27,9 @@ public class MailMock implements Mail {
   public boolean sendMail(String to, String subject, String text) {
 
     StringBuilder sb = new StringBuilder();
-    sb.append("From: ").append(this.from).append("|").append("To: ").append(to).append("|").append("Subject: ")
-        .append(subject).append("|").append("Text: ").append(text);
-    LOG.info(sb.toString());
+    String logMessage = sb.append("From: ").append(this.from).append("|").append("To: ").append(to).append("|").append("Subject: ")
+        .append(subject).append("|").append("Text: ").append(text).toString();
+    LOG.info(logMessage);
     return true;
   }
 }

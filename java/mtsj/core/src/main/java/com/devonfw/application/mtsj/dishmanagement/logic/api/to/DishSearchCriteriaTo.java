@@ -148,50 +148,6 @@ public class DishSearchCriteriaTo extends AbstractSearchCriteriaTo {
     this.searchByOption = searchByOption;
   }
 
-  // private static final long serialVersionUID = 1L;
-  //
-  // private String name;
-  //
-  // private String description;
-  //
-  // private BigDecimal price;
-  //
-  // /**
-  // * The constructor.
-  // */
-  // public DishSearchCriteriaTo() {
-  //
-  // super();
-  // }
-  //
-  // public String getName() {
-  //
-  // return this.name;
-  // }
-  //
-  // public void setName(String name) {
-  //
-  // this.name = name;
-  // }
-  //
-  // public String getDescription() {
-  //
-  // return this.description;
-  // }
-  //
-  // public void setDescription(String description) {
-  //
-  // this.description = description;
-  // }
-  //
-  // public BigDecimal getPrice() {
-  //
-  // return this.price;
-  // }
-  //
-  // public void setPrice(BigDecimal price) {
-  //
-  // this.price = price;
-  // }
+
 
 }

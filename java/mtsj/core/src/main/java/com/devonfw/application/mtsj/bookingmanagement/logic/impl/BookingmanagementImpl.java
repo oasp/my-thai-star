@@ -92,6 +92,14 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
   @Inject
   private Mail mailService;
 
+  private static final String BOOKING_DATE= "Booking Date: ";
+
+  private static final String  EMAIL_NOT_SENT= "Email not sent. {}";
+
+  private static final String APPLICATION_NAME = "MY THAI STAR";
+
+  private static final String LOCALHOST = "http://localhost:";
+
   /**
    * The constructor.
    */
@@ -159,7 +167,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
       cto.setOrders(getBeanMapper().mapList(entity.getOrders(), OrderEto.class));
       ctos.add(cto);
     }
-    if (ctos.size() > 0) {
+    if (!ctos.isEmpty()) {
       Pageable pagResultTo = PageRequest.of(criteria.getPageable().getPageNumber(), ctos.size());
       pagListTo = new PageImpl<>(ctos, pagResultTo, bookings.getTotalElements());
     }
@@ -268,7 +276,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
   public List<InvitedGuestEto> findInvitedGuestByBooking(Long bookingId) {
 
     List<InvitedGuestEntity> invitedGuestList = getInvitedGuestDao().findInvitedGuestByBooking(bookingId);
-    List<InvitedGuestEto> invitedGuestEtoList = new ArrayList<InvitedGuestEto>();
+    List<InvitedGuestEto> invitedGuestEtoList = new ArrayList<>();
     for (InvitedGuestEntity invitedGuestEntity : invitedGuestList) {
       invitedGuestEtoList.add(getBeanMapper().map(invitedGuestEntity, InvitedGuestEto.class));
     }
@@ -422,22 +430,22 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder invitedMailContent = new StringBuilder();
-      invitedMailContent.append("MY THAI STAR").append("\n");
+      invitedMailContent.append(APPLICATION_NAME).append("\n");
       invitedMailContent.append("Hi ").append(guest.getEmail()).append("\n");
       invitedMailContent.append(booking.getEmail()).append(" has invited you to an event on My Thai Star restaurant")
           .append("\n");
-      invitedMailContent.append("Booking Date: ").append(booking.getBookingDate()).append("\n");
+      invitedMailContent.append(BOOKING_DATE).append(booking.getBookingDate()).append("\n");
 
-      String linkAccept = "http://localhost:" + this.clientPort + "/booking/acceptInvite/" + guest.getGuestToken();
+      String linkAccept = LOCALHOST + this.clientPort + "/booking/acceptInvite/" + guest.getGuestToken();
 
-      String linkDecline = "http://localhost:" + this.clientPort + "/booking/rejectInvite/" + guest.getGuestToken();
+      String linkDecline = LOCALHOST + this.clientPort + "/booking/rejectInvite/" + guest.getGuestToken();
 
       invitedMailContent.append("To accept: ").append(linkAccept).append("\n");
       invitedMailContent.append("To decline: ").append(linkDecline).append("\n");
 
       this.mailService.sendMail(guest.getEmail(), "Event invite", invitedMailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
 
   }
@@ -446,13 +454,13 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder hostMailContent = new StringBuilder();
-      hostMailContent.append("MY THAI STAR").append("\n");
+      hostMailContent.append(APPLICATION_NAME).append("\n");
       hostMailContent.append("Hi ").append(booking.getEmail()).append("\n");
       hostMailContent.append("Your booking has been confirmed.").append("\n");
       hostMailContent.append("Host: ").append(booking.getName()).append("<").append(booking.getEmail()).append(">")
           .append("\n");
       hostMailContent.append("Booking CODE: ").append(booking.getBookingToken()).append("\n");
-      hostMailContent.append("Booking Date: ").append(booking.getBookingDate()).append("\n");
+      hostMailContent.append(BOOKING_DATE).append(booking.getBookingDate()).append("\n");
       if (!booking.getInvitedGuests().isEmpty()) {
         hostMailContent.append("Guest list:").append("\n");
         for (InvitedGuestEntity guest : booking.getInvitedGuests()) {
@@ -463,7 +471,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
       hostMailContent.append(cancellationLink).append("\n");
       this.mailService.sendMail(booking.getEmail(), "Booking confirmation", hostMailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
   }
 
@@ -471,13 +479,13 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder guestMailContent = new StringBuilder();
-      guestMailContent.append("MY THAI STAR").append("\n");
+      guestMailContent.append(APPLICATION_NAME).append("\n");
       guestMailContent.append("Hi ").append(guest.getEmail()).append("\n");
       guestMailContent.append("You have accepted the invite to an event in our restaurant.").append("\n");
       guestMailContent.append("Host: ").append(booking.getBooking().getName()).append("<")
           .append(booking.getBooking().getEmail()).append(">").append("\n");
       guestMailContent.append("Guest CODE: ").append(guest.getGuestToken()).append("\n");
-      guestMailContent.append("Booking Date: ").append(booking.getBooking().getBookingDate()).append("\n");
+      guestMailContent.append(BOOKING_DATE).append(booking.getBooking().getBookingDate()).append("\n");
 
       String cancellationLink = "http://localhost:" + this.clientPort + "/booking/rejectInvite/"
           + guest.getGuestToken();
@@ -485,7 +493,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
       guestMailContent.append("To cancel invite: ").append(cancellationLink).append("\n");
       this.mailService.sendMail(guest.getEmail(), "Invite accepted", guestMailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
   }
 
@@ -493,14 +501,14 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder mailContent = new StringBuilder();
-      mailContent.append("MY THAI STAR").append("\n");
+      mailContent.append(APPLICATION_NAME).append("\n");
       mailContent.append("Hi ").append(booking.getBooking().getEmail()).append("\n");
       mailContent.append(guest.getEmail()).append(" has ").append(action).append(" your invitation for the event on ")
           .append(booking.getBooking().getBookingDate()).append("\n");
 
       this.mailService.sendMail(booking.getBooking().getEmail(), "Invite " + action, mailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
   }
 
@@ -508,7 +516,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder guestMailContent = new StringBuilder();
-      guestMailContent.append("MY THAI STAR").append("\n");
+      guestMailContent.append(APPLICATION_NAME).append("\n");
       guestMailContent.append("Hi ").append(guest.getEmail()).append("\n");
       guestMailContent.append("You have declined the invitation from ").append(booking.getBooking().getName())
           .append("<").append(booking.getBooking().getEmail()).append(">").append(" for the event on ")
@@ -516,7 +524,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
       this.mailService.sendMail(guest.getEmail(), "Invite declined", guestMailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
   }
 
@@ -524,13 +532,13 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder mailContent = new StringBuilder();
-      mailContent.append("MY THAI STAR").append("\n");
+      mailContent.append(APPLICATION_NAME).append("\n");
       mailContent.append("Hi ").append(guest.getEmail()).append("\n");
       mailContent.append("The invitation from ").append(booking.getEmail()).append(" for the event on ")
           .append(booking.getBookingDate()).append(" has been cancelled.").append("\n");
       this.mailService.sendMail(guest.getEmail(), "Event cancellation", mailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
   }
 
@@ -538,13 +546,13 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     try {
       StringBuilder mailContent = new StringBuilder();
-      mailContent.append("MY THAI STAR").append("\n");
+      mailContent.append(APPLICATION_NAME).append("\n");
       mailContent.append("Hi ").append(booking.getEmail()).append("\n");
       mailContent.append("The invitation for the event on ").append(booking.getBookingDate())
           .append(" has been cancelled.").append("\n");
       this.mailService.sendMail(booking.getEmail(), "Event cancellation", mailContent.toString());
     } catch (Exception e) {
-      LOG.error("Email not sent. {}", e.getMessage());
+      LOG.error(EMAIL_NOT_SENT, e.getMessage());
     }
   }
 
@@ -564,7 +572,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
     Long cancellationLimit = bookingTimeMillis - (3600000 * this.hoursLimit);
     Long now = Timestamp.from(Instant.now()).getTime();
 
-    return (now > cancellationLimit) ? false : true;
+    return (now <= cancellationLimit);
   }
 
 }

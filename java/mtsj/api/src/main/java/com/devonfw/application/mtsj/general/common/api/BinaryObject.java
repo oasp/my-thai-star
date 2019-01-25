@@ -1,7 +1,5 @@
 package com.devonfw.application.mtsj.general.common.api;
 
-import com.devonfw.application.mtsj.general.common.api.ApplicationEntity;
-
 /**
  * This is the interface for a {@link BinaryObject} of the issue_6.
  */

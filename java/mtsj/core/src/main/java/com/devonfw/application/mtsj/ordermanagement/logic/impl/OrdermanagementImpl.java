@@ -157,7 +157,7 @@ public class OrdermanagementImpl extends AbstractComponentFacade implements Orde
       processOrders(ctos, order);
     }
 
-    if (ctos.size() > 0) {
+    if (!ctos.isEmpty()) {
       Pageable pagResultTo = PageRequest.of(criteria.getPageable().getPageNumber(), ctos.size());
       pagListTo = new PageImpl<>(ctos, pagResultTo, orders.getTotalElements());
     }
@@ -237,7 +237,7 @@ public class OrdermanagementImpl extends AbstractComponentFacade implements Orde
     OrderEntity orderEntity = getBeanMapper().map(order, OrderEntity.class);
     String token = orderEntity.getBooking().getBookingToken();
     // initialize, validate orderEntity here if necessary
-    orderEntity = getValidatedOrder(orderEntity.getBooking().getBookingToken(), orderEntity);
+    getValidatedOrder(orderEntity.getBooking().getBookingToken(), orderEntity);
     orderEntity.setOrderLines(orderLineEntities);
     OrderEntity resultOrderEntity = getOrderDao().save(orderEntity);
     LOG.debug("Order with id '{}' has been created.", resultOrderEntity.getId());
@@ -283,8 +283,7 @@ public class OrdermanagementImpl extends AbstractComponentFacade implements Orde
     }
 
     Pageable pagResultTo = PageRequest.of(criteria.getPageable().getPageNumber(), orderLinesCto.size());
-    Page<OrderLineCto> pagListTo = new PageImpl<>(orderLinesCto, pagResultTo, pagResultTo.getPageSize());
-    return pagListTo;
+    return new PageImpl<>(orderLinesCto, pagResultTo, pagResultTo.getPageSize());
   }
 
   @Override
@@ -418,11 +417,10 @@ public class OrdermanagementImpl extends AbstractComponentFacade implements Orde
       extras.clear();
       extras.addAll(set);
       // dish name
-      BigDecimal linePrice = BigDecimal.ZERO;
       sb.append(dishCto.getDish().getName()).append(", x").append(orderLine.getAmount());
       // dish cost
       BigDecimal dishCost = dishCto.getDish().getPrice().multiply(new BigDecimal(orderLine.getAmount()));
-      linePrice = dishCost;
+      BigDecimal linePrice = dishCost;
       // dish selected extras
       sb.append(". Extras: ");
       for (Ingredient extra : extras) {
@@ -476,6 +474,6 @@ public class OrdermanagementImpl extends AbstractComponentFacade implements Orde
     Long cancellationLimit = bookingTimeMillis - (3600000 * this.hoursLimit);
     Long now = Timestamp.from(Instant.now()).getTime();
 
-    return (now > cancellationLimit) ? false : true;
+    return (now <= cancellationLimit);
   }
 }

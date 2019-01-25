@@ -1,7 +1,6 @@
 package com.devonfw.application.mtsj.imagemanagement.common.api;
 
 import com.devonfw.application.mtsj.general.common.api.ApplicationEntity;
-import com.devonfw.application.mtsj.imagemanagement.common.api.Image;
 import com.devonfw.application.mtsj.imagemanagement.common.api.datatype.ContentType;
 
 /**

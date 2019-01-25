@@ -11,10 +11,10 @@ import org.flywaydb.core.Flyway;
 public class DatabaseMigrator {
 
   /** Path of test data location. */
-  private static final String testDataPath = "classpath:db/test-data";
+  private static final String TEST_DATA_PATH = "classpath:db/test-data";
 
   /** Path of master data location. */
-  private static final String masterDataPath = "classpath:db/migration";
+  private static final String MASTER_DATA_PATH = "classpath:db/migration";
 
   /** Property is true if database migration is enabled. */
   private boolean enabled;
@@ -37,9 +37,9 @@ public class DatabaseMigrator {
       final Flyway flyway = new Flyway();
       flyway.setDataSource(this.dataSource);
       if (this.testdata) {
-        flyway.setLocations(masterDataPath, testDataPath);
+        flyway.setLocations(MASTER_DATA_PATH, TEST_DATA_PATH);
       } else {
-        flyway.setLocations(masterDataPath);
+        flyway.setLocations(MASTER_DATA_PATH);
       }
       if (this.clean) {
         flyway.clean();

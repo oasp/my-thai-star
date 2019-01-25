@@ -40,6 +40,8 @@ public class BeansBatchConfig {
 
   private PlatformTransactionManager transactionManager;
 
+  private static final String JOB_CREATION_ERROR = "Could not create BatchJobOperator";
+
   @Value("ISOLATION_DEFAULT")
   private String isolationLevelForCreate;
 
@@ -56,7 +58,7 @@ public class BeansBatchConfig {
     try {
       jobOperator.setJobExplorer(this.jobExplorer.getObject());
     } catch (Exception e) {
-      throw new BeanCreationException("Could not create BatchJobOperator", e);
+      throw new BeanCreationException(JOB_CREATION_ERROR, e);
     }
 
     jobOperator.setJobLauncher(this.jobLauncher);
@@ -65,7 +67,7 @@ public class BeansBatchConfig {
     try {
       jobOperator.setJobRepository(this.jobRepository.getObject());
     } catch (Exception e) {
-      throw new BeanCreationException("Could not create BatchJobOperator", e);
+      throw new BeanCreationException(JOB_CREATION_ERROR, e);
     }
 
     return jobOperator;
@@ -100,7 +102,7 @@ public class BeansBatchConfig {
     try {
       this.jobLauncher.setJobRepository(this.jobRepository.getObject());
     } catch (Exception e) {
-      throw new BeanCreationException("Could not create BatchJobOperator", e);
+      throw new BeanCreationException(JOB_CREATION_ERROR, e);
     }
 
     return this.jobLauncher;

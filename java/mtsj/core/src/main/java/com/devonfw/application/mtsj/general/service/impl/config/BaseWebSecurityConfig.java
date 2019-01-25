@@ -36,6 +36,8 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
   @Inject
   private PasswordEncoder passwordEncoder;
 
+  private static final String LOGIN = "/login";
+
   private CorsFilter getCorsFilter() {
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -60,7 +62,7 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
   @Override
   public void configure(HttpSecurity http) throws Exception {
 
-    String[] unsecuredResources = new String[] { "/login", "/security/**", "/services/rest/login",
+    String[] unsecuredResources = new String[] { LOGIN, "/security/**", "/services/rest/login",
     "/services/rest/logout", "/services/rest/dishmanagement/**", "/services/rest/imagemanagement/**",
     "/services/rest/ordermanagement/v1/order", "/services/rest/bookingmanagement/v1/booking",
     "/services/rest/bookingmanagement/v1/booking/cancel/**",
@@ -70,10 +72,10 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
 
     http.userDetailsService(this.userDetailsService).csrf().disable().exceptionHandling().and().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-        .antMatchers(unsecuredResources).permitAll().antMatchers(HttpMethod.POST, "/login").permitAll().anyRequest()
+        .antMatchers(unsecuredResources).permitAll().antMatchers(HttpMethod.POST, LOGIN).permitAll().anyRequest()
         .authenticated().and()
         // the api/login requests are filtered with the JWTLoginFilter
-        .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+        .addFilterBefore(new JWTLoginFilter(LOGIN, authenticationManager()),
             UsernamePasswordAuthenticationFilter.class)
         // other requests are filtered to check the presence of JWT in header
         .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

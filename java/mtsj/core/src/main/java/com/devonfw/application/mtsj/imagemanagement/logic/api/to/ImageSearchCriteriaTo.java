@@ -5,129 +5,132 @@ import com.devonfw.application.mtsj.imagemanagement.common.api.datatype.ContentT
 import com.devonfw.module.basic.common.api.query.StringSearchConfigTo;
 
 /**
- * used to find {@link com.devonfw.application.mtsj.imagemanagement.common.api.Image}s.
+ * used to find
+ * {@link com.devonfw.application.mtsj.imagemanagement.common.api.Image}s.
  *
  */
 public class ImageSearchCriteriaTo extends AbstractSearchCriteriaTo {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  private String name;
+	private String name;
 
-  private String content;
+	private String content;
 
-  private ContentType contentType;
+	private ContentType contentType;
 
-  private String mimeType;
+	private String mimeType;
 
-  private StringSearchConfigTo nameOption;
+	private StringSearchConfigTo nameOption;
 
-  private StringSearchConfigTo contentOption;
+	private StringSearchConfigTo contentOption;
 
-  private StringSearchConfigTo mimeTypeOption;
+	private StringSearchConfigTo mimeTypeOption;
 
-  /**
-   * The constructor.
-   */
-  public ImageSearchCriteriaTo() {
+	/**
+	 * The constructor.
+	 */
+	public ImageSearchCriteriaTo() {
 
-    super();
-  }
+		super();
+	}
 
-  public String getName() {
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    return this.name;
-  }
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setName(String name) {
+	/**
+	 * @return the content
+	 */
+	public String getContent() {
+		return content;
+	}
 
-    this.name = name;
-  }
+	/**
+	 * @param content the content to set
+	 */
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-  public String getContent() {
+	/**
+	 * @return the contentType
+	 */
+	public ContentType getContentType() {
+		return contentType;
+	}
 
-    return this.content;
-  }
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(ContentType contentType) {
+		this.contentType = contentType;
+	}
 
-  public void setContent(String content) {
+	/**
+	 * @return the mimeType
+	 */
+	public String getMimeType() {
+		return mimeType;
+	}
 
-    this.content = content;
-  }
+	/**
+	 * @param mimeType the mimeType to set
+	 */
+	public void setMimeType(String mimeType) {
+		this.mimeType = mimeType;
+	}
 
-  public ContentType getContentType() {
+	/**
+	 * @return the nameOption
+	 */
+	public StringSearchConfigTo getNameOption() {
+		return nameOption;
+	}
 
-    return this.contentType;
-  }
+	/**
+	 * @param nameOption the nameOption to set
+	 */
+	public void setNameOption(StringSearchConfigTo nameOption) {
+		this.nameOption = nameOption;
+	}
 
-  public void setContentType(ContentType contentType) {
+	/**
+	 * @return the contentOption
+	 */
+	public StringSearchConfigTo getContentOption() {
+		return contentOption;
+	}
 
-    this.contentType = contentType;
-  }
+	/**
+	 * @param contentOption the contentOption to set
+	 */
+	public void setContentOption(StringSearchConfigTo contentOption) {
+		this.contentOption = contentOption;
+	}
 
-  public String getMimeType() {
+	/**
+	 * @return the mimeTypeOption
+	 */
+	public StringSearchConfigTo getMimeTypeOption() {
+		return mimeTypeOption;
+	}
 
-    return this.mimeType;
-  }
-
-  public void setExtension(String mimeType) {
-
-    this.mimeType = mimeType;
-  }
-
-  /**
-   * @return nameOption
-   */
-  public StringSearchConfigTo getNameOption() {
-
-    return this.nameOption;
-  }
-
-  /**
-   * @param nameOption new value of {@link #getnameOption}.
-   */
-  public void setNameOption(StringSearchConfigTo nameOption) {
-
-    this.nameOption = nameOption;
-  }
-
-  /**
-   * @return contentOption
-   */
-  public StringSearchConfigTo getContentOption() {
-
-    return this.contentOption;
-  }
-
-  /**
-   * @param contentOption new value of {@link #getcontentOption}.
-   */
-  public void setContentOption(StringSearchConfigTo contentOption) {
-
-    this.contentOption = contentOption;
-  }
-
-  /**
-   * @return mimeTypeOption
-   */
-  public StringSearchConfigTo getMimeTypeOption() {
-
-    return this.mimeTypeOption;
-  }
-
-  /**
-   * @param mimeTypeOption new value of {@link #getmimeTypeOption}.
-   */
-  public void setMimeTypeOption(StringSearchConfigTo mimeTypeOption) {
-
-    this.mimeTypeOption = mimeTypeOption;
-  }
-
-  /**
-   * @param mimeType new value of {@link #getmimeType}.
-   */
-  public void setMimeType(String mimeType) {
-
-    this.mimeType = mimeType;
-  }
+	/**
+	 * @param mimeTypeOption the mimeTypeOption to set
+	 */
+	public void setMimeTypeOption(StringSearchConfigTo mimeTypeOption) {
+		this.mimeTypeOption = mimeTypeOption;
+	}
 
 }
