@@ -48,6 +48,8 @@ services:
     image: my-thai-star/angular:latest
     networks:
       - my-thai-star
+    environment:
+      - 'ANGULAR_ENV={"version": "docker-version","restPathRoot": "api/","restServiceRoot": "api/services/rest/"}'
     labels:
       SERVICE_IGNORE: 'yes'
     depends_on:

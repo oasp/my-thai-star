@@ -19,7 +19,6 @@ export interface Config {
   backendType: BackendType;
   restPathRoot: string;
   restServiceRoot: string;
-  loadExternalConfig: boolean;
   pageSizes: number[];
   pageSizesDialog: number[];
   roles: Role[];
@@ -31,7 +30,6 @@ export const config: Config = {
   backendType: BackendType.REST,
   restPathRoot: 'http://localhost:8081/mythaistar/',
   restServiceRoot: 'http://localhost:8081/mythaistar/services/rest/',
-  loadExternalConfig: false, // load external configuration on /config endpoint
   pageSizes: [8, 16, 24],
   pageSizesDialog: [4, 8, 12],
   roles: [

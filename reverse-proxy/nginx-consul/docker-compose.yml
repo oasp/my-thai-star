@@ -50,6 +50,8 @@ services:
       - my-thai-star
     labels:
       SERVICE_IGNORE: 'yes'
+    environment:
+      - 'ANGULAR_ENV={"version": "docker-version","restPathRoot": "api/","restServiceRoot": "api/services/rest/"}'
     depends_on:
       - registrator
   java:

@@ -1,5 +1,4 @@
-FROM nginx:latest
+FROM nginx:alpine-perl
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY ./dist/ /var/www/
-COPY docker-external-config.json /var/www/docker-external-config.json
