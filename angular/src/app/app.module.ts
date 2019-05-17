@@ -1,7 +1,7 @@
 import { environment } from '../environments/environment';
 import { ConfigModule } from './core/config/config.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { BookTableModule } from './book-table/book-table.module';
@@ -21,6 +21,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { ElectronService } from './shared/electron/electron.service';
 import { WebviewDirective } from './shared/directives/webview.directive';
+import { CustomErrorHandler } from './core/error/custom-error-handler';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -53,7 +54,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       enabled: environment.production,
     }),
   ],
-  providers: [ElectronService],
+  providers: [
+    ElectronService,
+    { provide: ErrorHandler, useClass: CustomErrorHandler }
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
