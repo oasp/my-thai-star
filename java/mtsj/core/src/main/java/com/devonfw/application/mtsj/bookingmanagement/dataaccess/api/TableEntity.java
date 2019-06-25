@@ -6,7 +6,7 @@ import com.devonfw.application.mtsj.bookingmanagement.common.api.Table;
 import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity;
 
 @Entity
-@javax.persistence.Table(name = "Table")
+@javax.persistence.Table(name = "\"TABLE\"")
 public class TableEntity extends ApplicationPersistenceEntity implements Table {
 
   private Integer seatsNumber;

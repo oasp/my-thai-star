@@ -18,7 +18,7 @@ import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenc
 import com.devonfw.application.mtsj.usermanagement.common.api.User;
 
 @Entity
-@Table(name = "User")
+@Table(name = "\"USER\"")
 public class UserEntity extends ApplicationPersistenceEntity implements User {
 
   private String username;

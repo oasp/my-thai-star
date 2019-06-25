@@ -6,7 +6,7 @@ CREATE TABLE Addresses (
   city VARCHAR (255),
   country VARCHAR (255),
   geocode geography,
-  CONSTRAINT PK_Addresses_idUser FOREIGN KEY(idUser) REFERENCES User(id) NOCHECK
+  CONSTRAINT PK_Addresses_idUser FOREIGN KEY(idUser) REFERENCES USER(id) NOCHECK
 );
 
 CREATE VIEW GeoBooking AS SELECT
@@ -16,8 +16,8 @@ CREATE VIEW GeoBooking AS SELECT
   Addresses.geocode,
   OrderLine.amount
 FROM Booking
-JOIN User ON User.id = Booking.idUser
-JOIN Addresses ON User.id = Addresses.idUser
+JOIN USER ON USER.id = Booking.idUser
+JOIN Addresses ON USER.id = Addresses.idUser
 JOIN Orders ON Orders.idBooking = Booking.id
 JOIN OrderLine ON Orders.id = OrderLine.idOrder
 JOIN Dish ON Dish.id = OrderLine.idDish;
