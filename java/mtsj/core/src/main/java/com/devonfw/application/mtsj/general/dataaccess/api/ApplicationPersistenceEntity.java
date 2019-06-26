@@ -1,13 +1,10 @@
 package com.devonfw.application.mtsj.general.dataaccess.api;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-
 import com.devonfw.application.mtsj.general.common.api.ApplicationEntity;
 import com.devonfw.module.basic.common.api.entity.PersistenceEntity;
+import org.hibernate.envers.Audited;
+
+import javax.persistence.*;
 
 /**
  * Abstract Entity for all Entities with an id and a version field.

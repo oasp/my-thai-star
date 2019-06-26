@@ -5,6 +5,7 @@ import javax.persistence.Table;
 
 import com.devonfw.application.mtsj.dishmanagement.common.api.Category;
 import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity;
+import org.hibernate.envers.Audited;
 
 /**
  * The {@link com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity persistent entity} for
@@ -12,6 +13,7 @@ import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenc
  */
 @Entity
 @Table(name = "Category")
+@Audited
 public class CategoryEntity extends ApplicationPersistenceEntity implements Category {
 
   private static final long serialVersionUID = 1L;

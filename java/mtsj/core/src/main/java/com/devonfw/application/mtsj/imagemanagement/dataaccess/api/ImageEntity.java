@@ -8,12 +8,14 @@ import javax.persistence.Table;
 import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity;
 import com.devonfw.application.mtsj.imagemanagement.common.api.Image;
 import com.devonfw.application.mtsj.imagemanagement.common.api.datatype.ContentType;
+import org.hibernate.envers.Audited;
 
 /**
  * @author pparrado
  */
 @Entity
 @Table(name = "Image")
+@Audited
 public class ImageEntity extends ApplicationPersistenceEntity implements Image {
 
   private static final long serialVersionUID = 1L;

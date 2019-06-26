@@ -1,5 +1,7 @@
 package com.devonfw.application.mtsj.ordermanagement.common.api.exception;
 
+import com.devonfw.application.mtsj.general.common.api.NlsBundleApplicationRoot;
+
 import net.sf.mmm.util.exception.api.NlsRuntimeException;
 
 /**
@@ -8,12 +10,31 @@ import net.sf.mmm.util.exception.api.NlsRuntimeException;
  */
 public class CancelNotAllowedException extends NlsRuntimeException {
 
-  /**
-   * The constructor.
-   *
-   * @param message the error message
-   */
-  public CancelNotAllowedException() {
-    super("The order can not be cancelled.");
-  }
+	/** UID for serialization. */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	   * The constructor.
+	   */
+	public CancelNotAllowedException() {
+
+		this(null);
+	}
+
+
+	/**
+	   * The constructor.
+	   *
+	   * @param cause The root cause of this exception.
+	   */
+	public CancelNotAllowedException(Throwable cause) {
+
+		super(cause, createBundle(NlsBundleApplicationRoot.class).errorCancelInviteNotAllowed());
+	}
+
+	@Override
+	public boolean isTechnical() {
+
+		return false;
+	}
 }

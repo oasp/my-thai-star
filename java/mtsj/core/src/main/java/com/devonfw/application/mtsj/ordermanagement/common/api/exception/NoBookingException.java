@@ -1,5 +1,7 @@
 package com.devonfw.application.mtsj.ordermanagement.common.api.exception;
 
+import com.devonfw.application.mtsj.general.common.api.NlsBundleApplicationRoot;
+
 import net.sf.mmm.util.exception.api.NlsRuntimeException;
 
 /**
@@ -10,14 +12,32 @@ import net.sf.mmm.util.exception.api.NlsRuntimeException;
  */
 public class NoBookingException extends NlsRuntimeException {
 
-  /**
-   * The constructor.
-   *
-   * @param message the error message
-   */
-  public NoBookingException() {
+	/** UID for serialization. */
+	private static final long serialVersionUID = 1L;
 
-    super("The booking does not exist");
-  }
+	/**
+	   * The constructor.
+	   */
+	public NoBookingException() {
+
+		this(null);
+	}
+
+
+	/**
+	   * The constructor.
+	   *
+	   * @param cause The root cause of this exception.
+	   */
+	public NoBookingException(Throwable cause) {
+
+		super(cause, createBundle(NlsBundleApplicationRoot.class).errorNoBooking());
+	}
+
+	@Override
+	public boolean isTechnical() {
+
+		return false;
+	}
 
 }

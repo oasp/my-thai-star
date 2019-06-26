@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 import com.devonfw.application.mtsj.dishmanagement.common.api.Dish;
 import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity;
 import com.devonfw.application.mtsj.imagemanagement.dataaccess.api.ImageEntity;
+import org.hibernate.envers.Audited;
 
 /**
  * The {@link com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity persistent entity} for
@@ -22,6 +23,7 @@ import com.devonfw.application.mtsj.imagemanagement.dataaccess.api.ImageEntity;
  */
 @Entity
 @Table(name = "Dish")
+@Audited
 public class DishEntity extends ApplicationPersistenceEntity implements Dish {
 
   private static final long serialVersionUID = 1L;

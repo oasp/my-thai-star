@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import com.devonfw.application.mtsj.dishmanagement.common.api.Ingredient;
 import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity;
+import org.hibernate.envers.Audited;
 
 /**
  * The {@link com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenceEntity persistent entity} for
@@ -14,6 +15,7 @@ import com.devonfw.application.mtsj.general.dataaccess.api.ApplicationPersistenc
  */
 @Entity
 @Table(name = "Ingredient")
+@Audited
 public class IngredientEntity extends ApplicationPersistenceEntity implements Ingredient {
 
   private static final long serialVersionUID = 1L;

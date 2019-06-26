@@ -1,5 +1,7 @@
 package com.devonfw.application.mtsj.ordermanagement.common.api.exception;
 
+import com.devonfw.application.mtsj.general.common.api.NlsBundleApplicationRoot;
+
 import net.sf.mmm.util.exception.api.NlsRuntimeException;
 import net.sf.mmm.util.nls.api.NlsMessage;
 
@@ -10,29 +12,32 @@ import net.sf.mmm.util.nls.api.NlsMessage;
  */
 public class WrongTokenException extends NlsRuntimeException {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = 1L;
+	/** UID for serialization. */
+	private static final long serialVersionUID = 1L;
 
-  /**
-   * The constructor.
-   *
-   * @param message the error {@link #getNlsMessage() message}.
-   */
-  public WrongTokenException(NlsMessage message) {
+	/**
+	   * The constructor.
+	   */
+	public WrongTokenException() {
 
-    super(message);
-  }
+		this(null);
+	}
 
-  public WrongTokenException() {
 
-    super("Not a valid token");
-  }
+	/**
+	   * The constructor.
+	   *
+	   * @param cause The root cause of this exception.
+	   */
+	public WrongTokenException(Throwable cause) {
 
-  public WrongTokenException(String message) {
+		super(cause, createBundle(NlsBundleApplicationRoot.class).errorWrongToken());
+	}
 
-    super(message);
-  }
+	@Override
+	public boolean isTechnical() {
+
+		return false;
+	}
 
 }

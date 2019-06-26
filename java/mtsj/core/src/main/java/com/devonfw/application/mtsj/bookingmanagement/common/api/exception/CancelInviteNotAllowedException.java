@@ -1,5 +1,7 @@
 package com.devonfw.application.mtsj.bookingmanagement.common.api.exception;
 
+import com.devonfw.application.mtsj.general.common.api.NlsBundleApplicationRoot;
+
 import net.sf.mmm.util.exception.api.NlsRuntimeException;
 
 /**
@@ -8,7 +10,31 @@ import net.sf.mmm.util.exception.api.NlsRuntimeException;
  */
 public class CancelInviteNotAllowedException extends NlsRuntimeException {
 
-  public CancelInviteNotAllowedException() {
-    super("The booking can not be cancelled.");
-  }
+	/** UID for serialization. */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	   * The constructor.
+	   */
+	public CancelInviteNotAllowedException() {
+
+		this(null);
+	}
+
+
+	/**
+	   * The constructor.
+	   *
+	   * @param cause The root cause of this exception.
+	   */
+	public CancelInviteNotAllowedException(Throwable cause) {
+
+		super(cause, createBundle(NlsBundleApplicationRoot.class).errorCancelInviteNotAllowed());
+	}
+
+	@Override
+	public boolean isTechnical() {
+
+		return false;
+	}
 }

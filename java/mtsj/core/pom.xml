@@ -55,6 +55,16 @@
 
     <dependency>
       <groupId>com.devonfw.java.modules</groupId>
+      <artifactId>devon4j-jpa-envers</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.devonfw.java.modules</groupId>
+      <artifactId>devon4j-jpa-envers</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.devonfw.java.modules</groupId>
       <artifactId>devon4j-web</artifactId>
     </dependency>
     <!-- TODO remove below dependency after checking -->
