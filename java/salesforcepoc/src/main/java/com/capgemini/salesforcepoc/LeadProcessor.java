@@ -16,9 +16,12 @@ public class LeadProcessor implements Processor {
   public void process(Exchange exchange) throws Exception {
 
     String email = exchange.getProperty("email", String.class);
+    String name = exchange.getProperty("name", String.class);
+    String[] nameParts = name.split(" ");
     Lead lead = new Lead();
     lead.setEmail(email);
-    lead.setLastName("Unknown");
+    lead.setLastName(nameParts[nameParts.length - 1]);
+    lead.setFirstName(nameParts[0]);
     lead.setCompany("Unknown");
     lead.setLeadSource(Lead_LeadSourceEnum.OTHER);
     lead.setSalutation(Lead_SalutationEnum.MR_);

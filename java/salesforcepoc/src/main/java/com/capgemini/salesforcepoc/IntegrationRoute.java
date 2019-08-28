@@ -8,16 +8,30 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.salesforce.SalesforceComponent;
 import org.apache.camel.component.salesforce.SalesforceEndpointConfig;
 import org.apache.camel.component.salesforce.SalesforceLoginConfig;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.capgemini.salesforcepoc.dto.Lead;
-
 @Component
 public class IntegrationRoute extends RouteBuilder {
 
+  // Vault Token environment variable provided by Nomad; default value set to empty string
+  @Value("${VAULT_TOKEN:}")
+  private String vaultToken;
+
+  // Vault config data from application properties
+  @Value("${vault.host}")
+  private String vaultHost;
+
+  @Value("${vault.port}")
+  private int vaultPort;
+
+  @Value("$vault.secret.path")
+  private String vaultSecretPath;
+
+  // Salesforce config data from application properties
   @Value("${salesforce.auth.uri}")
   private String salesforceAuthUri;
 
@@ -36,6 +50,7 @@ public class IntegrationRoute extends RouteBuilder {
   @Value("${salesforce.auth.client.secret}")
   private String salesforceAuthClientSecret;
 
+  // Other data from application properties
   @Value("${log.uri}")
   private String logger;
 
@@ -52,6 +67,23 @@ public class IntegrationRoute extends RouteBuilder {
       this.logger += "?showAll=true&multiline=true";
     }
 
+    // If a vault token is received from Nomad, use the data from Vault,
+    // otherwise keep the data from application.properties
+    // if (this.vaultToken != null && !this.vaultToken.isEmpty()) {
+    // VaultTemplate vault = new VaultTemplate(VaultEndpoint.create(this.vaultHost, this.vaultPort),
+    // new TokenAuthentication(this.vaultToken));
+    //
+    // VaultResponseSupport<VaultSecretDTO> response = vault.read("secret/" + this.vaultSecretPath,
+    // VaultSecretDTO.class);
+    //
+    // this.salesforceAuthUri = response.getData().getUri();
+    // this.salesforceAuthUsername = response.getData().getUsername();
+    // this.salesforceAuthPassword = response.getData().getPassword();
+    // this.salesforceAuthSecurityToken = response.getData().getSecuritytoken();
+    // this.salesforceAuthClientID = response.getData().getClientID();
+    // this.salesforceAuthClientSecret = response.getData().getClientSecret();
+    // }
+
     SalesforceLoginConfig salesforceLoginConfig = new SalesforceLoginConfig();
     salesforceLoginConfig.setUserName(this.salesforceAuthUsername);
     salesforceLoginConfig.setPassword(this.salesforceAuthPassword + this.salesforceAuthSecurityToken);
@@ -59,7 +91,6 @@ public class IntegrationRoute extends RouteBuilder {
     salesforceLoginConfig.setClientId(this.salesforceAuthClientID);
     salesforceLoginConfig.setClientSecret(this.salesforceAuthClientSecret);
     salesforceLoginConfig.setLazyLogin(false);
-    Lead lead;
 
     SalesforceEndpointConfig salesforceEndpointConfig = new SalesforceEndpointConfig();
     salesforceEndpointConfig.setRawPayload(false);
@@ -86,29 +117,27 @@ public class IntegrationRoute extends RouteBuilder {
 
     rest().description("Salesforce PoC Microservice API")
         // create new lead
-        .post("/mythaistar/services/rest/register").to("direct:createlead")
+        .post("/mythaistar/services/rest/bookingmanagement/v1/booking").to("direct:createlead")
         // get leads
         .get("/salesforcepoc/leads").to("direct:getleads")
         // health check
         .get("/salesforcepoc/health").to("direct:health");
 
     // creates new lead in Salesforce with the eMail address from MTS register service call
-    from("direct:createlead").log("POST call for /mythaistar/services/rest/register recieved:").to(this.logger)
+    from("direct:createlead").log("POST call recieved:").to(this.logger)
         // store data from incoming message (from the MTS frontend), and forward the message to the MTS backend
-        .setProperty("email").spel("#{request.body['email']}")
-        /*
-         * //API not implemented in MTS java backend. Uncomment if API is available .marshal().json(JsonLibrary.Jackson)
-         * .log("send to MTS server {{mts.backend.uri}}:").choice().when(simple("{{verbose}}")) .setHeader("Trace",
-         * constant("verbose")).end().to(this.logger) .to("{{mts.backend.uri}}?bridgeEndpoint=true")
-         * .convertBodyTo(String.class).log("Answer from MTS server:").to(this.logger)
-         */
+        .setProperty("email").spel("#{request.body['booking']['email']}").setProperty("name")
+        .spel("#{request.body['booking']['name']}").marshal().json(JsonLibrary.Jackson).choice()
+        .when(simple("{{verbose}}")).setHeader("Trace", constant("verbose")).end()
+        .log("send to MTS server {{mts.backend.uri}}:").to(this.logger).to("{{mts.backend.uri}}?bridgeEndpoint=true")
+        .convertBodyTo(String.class).log("Answer from MTS server:").to(this.logger)
         // forfeit the response and send the DTO to the Salesforce target uri to create a new Lead instead
         .process(new LeadProcessor()).log("send to salesforce API:").to(this.logger).to("salesforce:createSObject")
         .log("Answer from salesforce API:").to(this.logger);
 
     // get the list of users (eMail addresses) that have been registered in Salesforce as leads after registering in MTS
     from("direct:getleads").log("GET call for /salesforcepoc/leads received.")
-        .to("salesforce:query?sObjectQuery=SELECT email FROM Lead WHERE lastname = 'Unknown'"
+        .to("salesforce:query?sObjectQuery=SELECT email FROM Lead WHERE company = 'Unknown'"
             + "&sObjectClass=com.capgemini.salesforcepoc.dto.QueryRecordsLead")
         .log("Response from SOQL query recieved:").to(this.logger);
 
