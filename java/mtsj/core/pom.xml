@@ -19,6 +19,9 @@
     <mts.database.groupId>com.h2database</mts.database.groupId>
     <mts.database.artifactId>h2</mts.database.artifactId>
     <mts.database.version>1.4.194</mts.database.version>
+
+    <sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
+
   </properties>
 
   <dependencies>
@@ -188,8 +191,8 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
-     <!-- Only required if you want to call external REST services within your Java application -->
+
+    <!-- Only required if you want to call external REST services within your Java application -->
     <dependency>
       <groupId>com.devonfw.java.starters</groupId>
       <artifactId>devon4j-starter-cxf-client-rest</artifactId>
@@ -316,12 +319,32 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <useSystemClassLoader>false</useSystemClassLoader>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <excludes>
             <exclude>config/application.properties</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

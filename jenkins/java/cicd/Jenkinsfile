@@ -71,7 +71,7 @@ pipeline{
                     dir(javaDir) {
                         withMaven(globalMavenSettingsConfig: globalSettingsId, maven: mavenInstallation) {
                             withSonarQubeEnv(sonarEnv) {
-                                sh "mvn sonar:sonar -Dsonar.dependencyCheck.reportPath=../../dependency-check-report.xml"
+                                sh "mvn verify sonar:sonar -Dsonar.dependencyCheck.reportPath=../../dependency-check-report.xml"
                             }
                         }
                         timeout(time: 1, unit: 'HOURS') {

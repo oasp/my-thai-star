@@ -108,7 +108,9 @@ pipeline{
                                     -Dsonar.projectKey=${props.name} \
                                     -Dsonar.projectName=${props.name} \
                                     -Dsonar.projectVersion=${props.version} \
-                                    -Dsonar.sources=${srcDir}
+                                    -Dsonar.sources=${srcDir} \
+                                    -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info
+
                             """
                         }
                         timeout(time: 1, unit: 'HOURS') {

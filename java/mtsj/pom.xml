@@ -12,7 +12,7 @@
 
   <properties>
     <spring.boot.version>2.1.9.RELEASE</spring.boot.version>
-    
+
     <devon4j.version>3.2.1</devon4j.version>
     <java.version>1.8</java.version>
     <devon.port.range>81</devon.port.range>
@@ -20,6 +20,9 @@
     <devon.http.port>${devon.port.range}81</devon.http.port>
     <devon.db.port>${devon.port.range}43</devon.db.port>
     <devon.test.excluded.groups>subsystem,system</devon.test.excluded.groups>
+
+    <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/core/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <aggregate.report.dir>core/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
   </properties>
 
   <modules>
@@ -30,14 +33,14 @@
 
   <dependencyManagement>
     <dependencies>
-     <!-- overriding junit version from spring-boot by importing BOM before -->
-    <dependency>
+      <!-- overriding junit version from spring-boot by importing BOM before -->
+      <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
         <version>${junit.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>    
+      </dependency>
       <!-- BOM of spring-boot -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -139,6 +142,17 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -155,12 +169,14 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.0</version>
+        <version>3.0.0-M4</version>
         <configuration>
-          <excludedGroups>${devon.test.excluded.groups}</excludedGroups>
-          <forkCount>0</forkCount>
-          <reuseForks>true</reuseForks>
+          <workingDirectory>${basedir}</workingDirectory>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.20.1</version>
       </plugin>
     </plugins>
   </build>

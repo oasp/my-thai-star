@@ -10,7 +10,7 @@
     "start:electron": "npm-run-all -p serve electron:serve",
     "compodoc": "compodoc -p src/tsconfig.app.json -s",
     "test": "ng test --browsers Chrome",
-    "test:ci": "ng test --browsers ChromeHeadless --watch=false",
+    "test:ci": "ng test --browsers ChromeHeadless --watch=false --code-coverage",
     "test:firefox": "ng test --browsers Firefox",
     "test:ci:firefox": "ng test --browsers FirefoxHeadless --watch=false",
     "test:firefox-dev": "ng test --browsers FirefoxDeveloper",
