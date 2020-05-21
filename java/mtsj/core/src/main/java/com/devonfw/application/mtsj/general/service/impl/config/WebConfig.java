@@ -2,7 +2,6 @@ package com.devonfw.application.mtsj.general.service.impl.config;
 
 import javax.servlet.Filter;
 
-import org.apache.catalina.filters.SetCharacterEncodingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

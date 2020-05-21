@@ -1,5 +1,6 @@
 package com.devonfw.application.mtsj.general.service.impl.rest;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -28,6 +29,9 @@ public class SecurityRestServiceImpl {
   /** Logger instance. */
   private static final Logger LOG = LoggerFactory.getLogger(SecurityRestServiceImpl.class);
 
+  @Inject
+  private TokenAuthenticationService tokenAuthenticationService;
+
   /**
    * Returns the user details from the jwt token included in the 'Authorization' header
    *
@@ -39,7 +43,7 @@ public class SecurityRestServiceImpl {
   @Path("/currentuser/")
   public UserDetailsClientTo getCurrentUserDetails(@Context HttpServletRequest request) {
 
-    return TokenAuthenticationService.getUserdetailsFromToken(request.getHeader("Authorization"));
+    return this.tokenAuthenticationService.getUserdetailsFromToken(request.getHeader("Authorization"));
   }
 
 }

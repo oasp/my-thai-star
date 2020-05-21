@@ -83,13 +83,17 @@ export class AuthEffects {
         return this.userService.login(user.username, user.password).pipe(
           map((res) => {
             if (res.headers.get('X-Mythaistar-Otp') === 'NONE') {
-              return authActions.token({
+                    return authActions.token({
                 token: { token: res.headers.get('Authorization') },
               });
             } else if (res.headers.get('X-Mythaistar-Otp') === 'OTP') {
               return authActions.verifyTwoFactor({
                 username: user.username,
                 password: user.password,
+              });
+            } else {
+              return authActions.token({
+                token: { token: res.headers.get('Authorization') },
               });
             }
           }),
