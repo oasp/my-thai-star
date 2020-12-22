@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project 
+  xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>mtsj</artifactId>
   <groupId>io.oasp.application</groupId>
@@ -7,7 +9,6 @@
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>Application based on the Open Application Standard Platform for Java (OASP4J).</description>
-
   <properties>
     <spring.boot.version>1.5.3.RELEASE</spring.boot.version>
     <oasp4j.version>2.4.0</oasp4j.version>
@@ -16,14 +17,55 @@
     <oasp.http.port>${oasp.port.range}81</oasp.http.port>
     <oasp.db.port>${oasp.port.range}43</oasp.db.port>
     <oasp.test.excluded.groups>io.oasp.module.test.common.api.category.CategorySubsystemTest,io.oasp.module.test.common.api.category.CategorySystemTest</oasp.test.excluded.groups>
+    <!-- CICD -->
+    <sonar.jacoco.version>3.8</sonar.jacoco.version>
+    <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.language>java</sonar.language>
+    <sonar.java.source>1.7</sonar.java.source>
+    <sonar.junit.reportPaths>target/surefire-reports</sonar.junit.reportPaths>
+    <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
+    <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+    <sonar.projectKey>${project.artifactId}</sonar.projectKey>
+    <sonar.exclusions>
+        **/generated-sources/**/*,
+        **io/oasp/application/mtsj/general/**/*,
+        **/*Dao.java,
+        **/*Entity.java,
+        **/*Cto.java,
+        **/*Eto.java,
+        **/*SearchCriteriaTo.java,
+        **/*management.java,
+        **/*SpringBootApp.java,
+        **/*SpringBootBatchApp.java,
+        **/*.xml,
+        **/*.jsp
+    </sonar.exclusions>
+    <sonar.coverage.exclusions>
+        **io/oasp/application/mtsj/general/**/*,
+        **/*Dao.java,
+        **/*Entity.java,
+        **/*Cto.java,
+        **/*Eto.java,
+        **/*SearchCriteriaTo.java,
+        **/*management.java,
+        **/*SpringBootApp.java,
+        **/*SpringBootBatchApp.java,
+        **/*.xml,
+        **/*.jsp
+    </sonar.coverage.exclusions>
+    <sonar.host.url>http://sonarqube:9000/sonarqube/</sonar.host.url>
+    <jacoco.version>0.7.9</jacoco.version>
+    <war.plugin.version>3.2.0</war.plugin.version>
+    <assembly.plugin.version>3.1.0</assembly.plugin.version>
+    <!-- /CICD -->
   </properties>
-
   <modules>
     <module>core</module>
     <module>server</module>
     <module>api</module>
   </modules>
-
   <dependencyManagement>
     <dependencies>
       <!-- BOM of spring-boot -->
@@ -42,9 +84,14 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.sonarsource.java</groupId>
+        <artifactId>sonar-jacoco-listeners</artifactId>
+        <version>${sonar.jacoco.version}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -55,15 +102,21 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <!-- CICD -->
+    <dependency>
+      <groupId>org.sonarsource.java</groupId>
+      <artifactId>sonar-jacoco-listeners</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- /CICD -->
   </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
-            <version>1.0.0</version>
+          <version>1.0.0</version>
           <configuration>
             <lifecycleMappingMetadata>
               <pluginExecutions>
@@ -125,9 +178,20 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <!-- CICD -->
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${jacoco.version}</version>
+        </plugin>
+        <!-- /CICD -->
       </plugins>
     </pluginManagement>
-
     <plugins>
       <!-- configure java compiler -->
       <plugin>
@@ -139,15 +203,82 @@
           <target>${java.version}</target>
         </configuration>
       </plugin>
+      <!-- CICD -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.20.1</version>
         <configuration>
+          <argLine>-XX:-UseSplitVerifier -Xmx2048m ${surefireArgLine}</argLine>
+          <testFailureIgnore>false</testFailureIgnore>
+          <useFile>false</useFile>
+          <reportsDirectory>${project.basedir}/${sonar.junit.reportPaths}</reportsDirectory>
+          <argLine>${jacoco.agent.argLine}</argLine>
           <excludedGroups>${oasp.test.excluded.groups}</excludedGroups>
+          <alwaysGenerateSurefireReport>true</alwaysGenerateSurefireReport>
+          <aggregate>true</aggregate>
+          <properties>
+            <property>
+              <name>listener</name>
+              <value>org.sonar.java.jacoco.JUnitListener</value>
+            </property>
+          </properties>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <configuration>
+          <argLine>-Xmx128m</argLine>
+          <append>true</append>
+          <propertyName>jacoco.agent.argLine</propertyName>
+          <destFile>${sonar.jacoco.reportPath}</destFile>
+          <excludes>
+            <exclude>**/generated-sources/**/*,</exclude>
+            <exclude>**io/oasp/application/mtsj/general/**/*</exclude>
+            <exclude>**/*Dao.java</exclude>
+            <exclude>**/*Entity.java</exclude>
+            <exclude>**/*Cto.java</exclude>
+            <exclude>**/*Eto.java</exclude>
+            <exclude>**/*SearchCriteriaTo.java</exclude>
+            <exclude>**/*management.java</exclude>
+            <exclude>**/*SpringBootApp.java</exclude>
+            <exclude>**/*SpringBootBatchApp.java</exclude>
+            <exclude>**/*.class</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${sonar.jacoco.reportPath}</destFile>
+              <append>true</append>
+            </configuration>
+          </execution>
+          <execution>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-site</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- /CICD -->
     </plugins>
   </build>
-
   <profiles>
     <profile>
       <id>subsystemtest</id>
@@ -162,18 +293,16 @@
       </properties>
     </profile>
   </profiles>
-
   <distributionManagement>
     <repository>
       <id>devon.releases</id>
       <name>devon Releases</name>
-      <url>https://devon.s2-eu.capgemini.com/nexus/content/repositories/releases/</url>
+      <url>http://nexus:8081/nexus/content/repositories/releases/</url>
     </repository>
     <snapshotRepository>
       <id>devon.snapshots</id>
       <name>devon Snapshots</name>
-      <url>https://devon.s2-eu.capgemini.com/nexus/content/repositories/snapshots/</url>
+      <url>http://nexus:8081/nexus/content/repositories/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
-
 </project>

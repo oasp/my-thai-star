@@ -36,7 +36,8 @@
         "prodcompose": "environments/environment.prodcompose.ts",
         "pwa": "environments/environment.pwa.ts",
         "node": "environments/environment.node.ts",
-        "net": "environments/environment.net.ts"
+        "net": "environments/environment.net.ts",
+        "docker": "environments/environment.docker.ts"
       }
     }
   ],
