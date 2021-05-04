@@ -38,7 +38,7 @@ public class BookingEntity extends ApplicationPersistenceEntity implements Booki
 
   private String email;
 
-  private Boolean canceled;
+  private String statusString;
 
   private BookingType bookingType;
 
@@ -61,7 +61,7 @@ public class BookingEntity extends ApplicationPersistenceEntity implements Booki
   public BookingEntity() {
 
     super();
-    this.canceled = false;
+    this.statusString = "order taken";
   }
 
   /**
@@ -176,18 +176,18 @@ public class BookingEntity extends ApplicationPersistenceEntity implements Booki
    * @return canceled
    */
   @Override
-  public Boolean getCanceled() {
+  public String getStatus() {
 
-    return this.canceled;
+    return this.statusString;
   }
 
   /**
    * @param canceled new value of {@link #getcanceled}.
    */
   @Override
-  public void setCanceled(Boolean canceled) {
+  public void setStatus(String statusString) {
 
-    this.canceled = canceled;
+    this.statusString = statusString;
   }
 
   /**

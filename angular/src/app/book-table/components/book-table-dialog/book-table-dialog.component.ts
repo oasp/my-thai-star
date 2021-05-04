@@ -11,7 +11,7 @@ import * as bookTableActions from '../../store/actions/book-table.actions';
   styleUrls: ['./book-table-dialog.component.scss'],
 })
 export class BookTableDialogComponent implements OnInit {
-  data: any;
+  data: any;//abd
   date: string;
 
   constructor(

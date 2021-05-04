@@ -13,7 +13,7 @@ import {
 import { OrderListView } from '../../shared/view-models/interfaces';
 import { WaiterCockpitService } from '../services/waiter-cockpit.service';
 import { OrderDialogComponent } from './order-dialog/order-dialog.component';
-
+import {FormControl} from '@angular/forms';
 @Component({
   selector: 'app-cockpit-order-cockpit',
   templateUrl: './order-cockpit.component.html',
@@ -36,11 +36,13 @@ export class OrderCockpitComponent implements OnInit, OnDestroy {
   totalOrders: number;
 
   columns: any[];
+  status: any[];
 
   displayedColumns: string[] = [
     'booking.bookingDate',
     'booking.email',
     'booking.bookingToken',
+    'booking.status', //abd
   ];
 
   pageSizes: number[];
@@ -50,6 +52,7 @@ export class OrderCockpitComponent implements OnInit, OnDestroy {
     email: undefined,
     bookingToken: undefined,
   };
+  
 
   constructor(
     private dialog: MatDialog,
@@ -76,6 +79,18 @@ export class OrderCockpitComponent implements OnInit, OnDestroy {
           { name: 'booking.bookingDate', label: cockpitTable.reservationDateH },
           { name: 'booking.email', label: cockpitTable.emailH },
           { name: 'booking.bookingToken', label: cockpitTable.bookingTokenH },
+          { name: 'booking.state', label: cockpitTable.statusH }, //abd
+        ];
+      });
+      this.translocoSubscription = this.translocoService
+      .selectTranslateObject('cockpit.status', {}, lang)
+      .subscribe((cockpitTable) => {
+        this.status = [
+          { name: 'order taken', label: cockpitTable.orderTakenH },
+          { name: 'delivering order', label: cockpitTable.deliveringOrderH },
+          { name: 'order delivered', label: cockpitTable.orderDeliveredH },
+          { name: 'order paid', label: cockpitTable.orderPaidH },
+          { name: 'canceled', label: cockpitTable.canceledH } //abd
         ];
       });
   }
@@ -118,11 +133,30 @@ export class OrderCockpitComponent implements OnInit, OnDestroy {
     }
     this.applyFilters();
   }
-
+  //abd
+ /* status: any[] = [
+    'order taken',
+    'delivering order',
+    'order delivered',
+    'order paid',
+    'canceled',
+    
+  ];*/
+  //abd
   selected(selection: OrderListView): void {
     this.dialog.open(OrderDialogComponent, {
       width: '80%',
       data: selection,
+    });
+  
+  } 
+  
+  updateState(option , selectedOrder: OrderListView):void {
+    this.orders[this.orders.indexOf(selectedOrder)].state= option.name;//abd
+    const str = JSON.stringify(this.orders[this.orders.indexOf(selectedOrder)]);
+    const obj = JSON.parse(str);
+    const id = obj.order.id;
+    this.waiterCockpitService.postBookingStauts(this.orders[this.orders.indexOf(selectedOrder)].state,id).subscribe((data: any) => {
     });
   }
 

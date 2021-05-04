@@ -25,7 +25,8 @@ export class WaiterCockpitService {
     'ordermanagement/v1/order/search';
   private readonly filterOrdersRestPath: string =
     'ordermanagement/v1/order/search';
-
+    private readonly orderUpdateStatus: string =
+    'ordermanagement/v1/order/orderstatus/';
   private readonly restServiceRoot$: Observable<
     string
   > = this.config.getRestServiceRoot();
@@ -87,4 +88,13 @@ export class WaiterCockpitService {
   getTotalPrice(orderLines: OrderView[]): number {
     return this.priceCalculator.getTotalPrice(orderLines);
   }
+
+
+    postBookingStauts(orderState: any, orderId: number): Observable<any> {
+      return this.restServiceRoot$.pipe(
+        exhaustMap((restServiceRoot) =>
+          this.http.post(`${restServiceRoot}${this.orderUpdateStatus}`+orderId+'/',orderState),
+        ),
+      );
+    }
 }

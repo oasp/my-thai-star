@@ -36,7 +36,7 @@ public class BookingEto extends AbstractEto implements Booking {
   @EmailExtended
   private String email;
 
-  private Boolean canceled;
+  private String statusString;
 
   private BookingType bookingType;
 
@@ -133,15 +133,15 @@ public class BookingEto extends AbstractEto implements Booking {
   }
 
   @Override
-  public Boolean getCanceled() {
+  public String getStatus() {
 
-    return this.canceled;
+    return this.statusString;
   }
 
   @Override
-  public void setCanceled(Boolean canceled) {
+  public void setStatus(final String statusString) {
 
-    this.canceled = canceled;
+    this.statusString = statusString;
   }
 
   @Override
@@ -180,7 +180,7 @@ public class BookingEto extends AbstractEto implements Booking {
     result = prime * result + ((this.expirationDate == null) ? 0 : this.expirationDate.hashCode());
     result = prime * result + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
     result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
-    result = prime * result + ((this.canceled == null) ? 0 : this.canceled.hashCode());
+    result = prime * result + ((this.statusString == null) ? 0 : this.statusString.hashCode());
     result = prime * result + ((this.bookingType == null) ? 0 : this.bookingType.hashCode());
 
     result = prime * result + ((this.tableId == null) ? 0 : this.tableId.hashCode());
@@ -251,11 +251,11 @@ public class BookingEto extends AbstractEto implements Booking {
     } else if (!this.email.equals(other.email)) {
       return false;
     }
-    if (this.canceled == null) {
-      if (other.canceled != null) {
+    if (this.statusString == null) {
+      if (other.statusString != null) {
         return false;
       }
-    } else if (!this.canceled.equals(other.canceled)) {
+    } else if (!this.statusString.equals(other.statusString)) {
       return false;
     }
     if (this.bookingType == null) {

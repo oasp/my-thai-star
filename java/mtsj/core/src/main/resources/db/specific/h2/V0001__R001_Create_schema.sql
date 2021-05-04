@@ -48,7 +48,7 @@ CREATE TABLE Booking (
   bookingDate TIMESTAMP NOT NULL,
   expirationDate TIMESTAMP,
   creationDate TIMESTAMP,
-  canceled BOOLEAN NOT NULL DEFAULT ((0)) ,
+  status VARCHAR(255) NOT NULL,
   bookingType INTEGER,
   idTable BIGINT,
   idOrder BIGINT,

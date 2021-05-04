@@ -196,7 +196,16 @@
       "bookingTokenH": "Reference Number",
       "ownerH": "Owner",
       "tableH": "Table",
-      "creationDateH": "Creation date"
+      "creationDateH": "Creation date",
+      "statusH": "State"
+    },
+    "status": {
+      "orderTakenH": "order taken",
+      "deliveringOrderH": "delivering order",
+      "orderDeliveredH": "order delivered",
+      "orderPaidH": "order paid",
+      "canceledH": "canceled"
+   
     }
   }
 }

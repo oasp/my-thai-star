@@ -41,7 +41,7 @@ export class ReservationCockpitComponent implements OnInit, OnDestroy {
   filters: FilterCockpit = {
     bookingDate: undefined,
     email: undefined,
-    bookingToken: undefined,
+    bookingToken: undefined
   };
 
   constructor(

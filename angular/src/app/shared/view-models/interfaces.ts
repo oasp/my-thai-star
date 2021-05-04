@@ -43,7 +43,10 @@ export interface BookingView {
   tableId?: number;
   bookingToken?: number;
   creationDate?: string;
+  status?: string;//abd
 }
+
+
 
 export interface FriendsInvite {
   email: string;
@@ -86,6 +89,7 @@ export interface OrderViewResult {
 export interface OrderListView {
   orderLines: OrderView[];
   booking: BookingView;
+  state?: string;//abd
 }
 
 export interface OrderDishListView {

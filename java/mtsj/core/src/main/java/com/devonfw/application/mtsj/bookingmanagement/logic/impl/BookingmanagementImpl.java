@@ -191,7 +191,7 @@ public class BookingmanagementImpl extends AbstractComponentFacade implements Bo
 
     Objects.requireNonNull(booking, "booking");
     BookingEntity bookingEntity = getBeanMapper().map(booking.getBooking(), BookingEntity.class);
-    bookingEntity.setCanceled(false);
+    bookingEntity.setStatus("order taken");
     List<InvitedGuestEntity> invited = getBeanMapper().mapList(booking.getInvitedGuests(), InvitedGuestEntity.class);
 
     for (InvitedGuestEntity invite : invited) {
