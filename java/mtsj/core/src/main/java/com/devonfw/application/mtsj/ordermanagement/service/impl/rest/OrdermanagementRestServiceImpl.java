@@ -50,6 +50,13 @@ public class OrdermanagementRestServiceImpl implements OrdermanagementRestServic
 
   }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+  @Override
+  public void setOrderStatus(long id, String statusString) {
+    this.ordermanagement.setOrderStatus(id, statusString);
+  }
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
   @Override
   public Page<OrderCto> findOrdersByPost(OrderSearchCriteriaTo searchCriteriaTo) {
 

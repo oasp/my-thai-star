@@ -9,13 +9,26 @@ import com.devonfw.module.basic.common.api.to.AbstractEto;
 public class OrderEto extends AbstractEto implements Order {
 
   private static final long serialVersionUID = 1L;
-
+//-------------------------------------------------------------------------------------------------------------------------------------------
+  private String status;
+//-------------------------------------------------------------------------------------------------------------------------------------------
   private Long bookingId;
 
   private Long invitedGuestId;
 
   private String bookingToken;
 
+//-------------------------------------------------------------------------------------------------------------------------------------------
+  @Override
+  public void setStatus(String statusString) {
+    this.status = statusString;
+  }
+
+  @Override
+  public String getStatus() {
+    return this.status;
+  }
+//-------------------------------------------------------------------------------------------------------------------------------------------
   /**
    * @return bookingToken
    */

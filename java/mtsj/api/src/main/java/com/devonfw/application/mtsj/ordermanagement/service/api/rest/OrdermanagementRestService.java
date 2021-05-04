@@ -62,6 +62,14 @@ public interface OrdermanagementRestService {
   @Path("/order/cancelorder/{id}/")
   public void cancelOrder(@PathParam("id") long id);
 
+//----------------------------------------------------------------------------------------------------------------------
+
+  @POST
+  @Path("/order/orderstatus/{id}/")
+  public void setOrderStatus(@PathParam("id") long id, String status);
+
+//----------------------------------------------------------------------------------------------------------------------
+
   /**
    * Delegates to {@link Ordermanagement#findOrderCtos}.
    *
