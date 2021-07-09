@@ -21,7 +21,7 @@
     "graphql": "^0.9.2",
     "graphql-server-express": "^0.6.0",
     "graphql-tools": "^0.11.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.21",
     "morgan": "^1.8.1",
     "nodemailer": "^4.0.1",
     "passport": "^0.3.2",
