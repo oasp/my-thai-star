@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: java
+  annotations:
+    dev.okteto.com/generate-host: mts
+    nginx.ingress.kubernetes.io/rewrite-target: /mythaistar/$2
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - mts-isandesh1986.cloud.okteto.net
+  rules:
+  - host: mts-isandesh1986.cloud.okteto.net
+    http:
+      paths:
+      - path: /api(/)(.*)
+        backend:
+          serviceName: java
+          servicePort: 8081
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: angular
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+  - hosts:
+    - mts-isandesh1986.cloud.okteto.net
+  rules:
+  - host: mts-isandesh1986.cloud.okteto.net
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: angular
+          servicePort: 80

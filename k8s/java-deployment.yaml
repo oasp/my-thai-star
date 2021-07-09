@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java
+  labels:
+    app: mts
+spec:
+  selector:
+    matchLabels:
+      app: mts
+      tier: java
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mts
+        tier: java
+    spec:
+      containers:
+      - name: java
+        image: isandesh/my-thai-star-java:latest
+        imagePullPolicy: Always
+        ports:
+          - name: http
+            containerPort: 8081

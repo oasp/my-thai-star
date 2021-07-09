@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular
+  labels:
+    app: mts
+spec:
+  selector:
+    matchLabels:
+      app: mts
+      tier: angular
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mts
+        tier: angular
+    spec:
+      containers:
+      - name: angular
+        image: isandesh/my-thai-star-angular:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: http
