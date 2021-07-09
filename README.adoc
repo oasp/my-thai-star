@@ -42,19 +42,30 @@ MrChecker is a testing framework included in devonfw with several useful modules
 Some folders have been marked as __deprecated__. They have not been removed for information purposes and in case it is necessary to recover previous work. They are the following:
 
 - graphQL
-- serverless 
+- serverless
 
-Use them at your own risk. 
+Use them at your own risk.
 
 == Deployment
 
 === From code
 
+To containerize the java backend use the below maven command:
+
+`mvn package -Pdocker`
+
+To run the docker image,
+
+[source]
+docker run --publish 8081:8081 --detach --name mtsj_java my-thai-star/java:<version> --network my-thai-star
+
 This application can be easily deployed using **Docker** and **docker-compose**.
+
+Use **docker-compose** to deploy reverse-proxy and angular front end.
 
 `$ docker-compose up`
 
-As both **Angular** and **Java** `Dockerfile`(s) are using **multi-stage build**, apps are being built in their development environments (`node` for Angular and `maven` for Java) and then deployed in `nginx` and `tomcat` respectively.
+As  **Angular** is using **multi-stage build** built in  `node` and then deployed in `nginx`.
 
 3 Docker containers will be created:
 

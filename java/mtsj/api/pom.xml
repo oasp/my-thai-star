@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" 
-  xmlns="http://maven.apache.org/POM/4.0.0" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.devonfw.java.mtsj</groupId>
@@ -33,9 +32,9 @@
     </dependency>
 
     <!-- <dependency>
-    <groupId>com.devonfw.java.modules</groupId>
-    <artifactId>devon4j-jpa</artifactId>
-  </dependency> -->
+      <groupId>com.devonfw.java.modules</groupId>
+      <artifactId>devon4j-jpa</artifactId>
+      </dependency> -->
 
     <dependency>
       <groupId>com.devonfw.java.modules</groupId>
@@ -61,22 +60,7 @@
           <skip>true</skip>
         </configuration>
       </plugin>
-      <!-- we want this library to be built reproducibly -->
-      <plugin>
-        <groupId>io.github.zlika</groupId>
-        <artifactId>reproducible-build-maven-plugin</artifactId>
-        <version>0.11</version>
-        <executions>
-          <execution>
-            <id>run-when-packaged</id>
-            <goals>
-              <goal>strip-jar</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
-  
+
 </project>

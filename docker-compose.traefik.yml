@@ -19,21 +19,24 @@ services:
     labels:
       - "traefik.enable=false"
 
-  java:
-    build: "java/"
-    restart: always
-    image: my-thai-star/java:latest
-    networks:
-      - my-thai-star
-    labels:
-      - "traefik.http.routers.java.rule=PathPrefix(`/api/`)"
-      - "traefik.http.routers.java.middlewares=fixpath"
-      - "traefik.http.middlewares.fixpath.chain.middlewares=remove-api,add-mythaistar"
-      - "traefik.http.middlewares.remove-api.stripprefix.prefixes=/api"
-      - "traefik.http.middlewares.add-mythaistar.addprefix.prefix=/mythaistar"
-      - "traefik.http.services.java.loadBalancer.healthcheck.path=/mythaistar/services/rest/dishmanagement/v1/category/0/"
-      - "traefik.http.services.java.loadBalancer.healthcheck.interval=10s"
-      - "traefik.http.services.java.loadBalancer.healthcheck.scheme=http"
+#  docker build moved as maven plugin.
+ 
+#  java:
+#    build: "java/"
+#    restart: always
+#    image: my-thai-star/java:latest
+#    networks:
+#      - my-thai-star
+#    labels:
+#      - "traefik.http.routers.java.rule=PathPrefix(`/api/`)"
+#      - "traefik.http.routers.java.middlewares=fixpath"
+#      - "traefik.http.middlewares.fixpath.chain.middlewares=remove-api,add-mythaistar"
+#      - "traefik.http.middlewares.remove-api.stripprefix.prefixes=/api"
+#      - "traefik.http.middlewares.add-mythaistar.addprefix.prefix=/mythaistar"
+#      - "traefik.http.services.java.loadBalancer.healthcheck.path=/mythaistar/services/rest/dishmanagement/v1/category/0/"
+#      - "traefik.http.services.java.loadBalancer.healthcheck.interval=10s"
+#      - "traefik.http.services.java.loadBalancer.healthcheck.scheme=http"
+
   angular:
     build: "angular/"
     restart: always

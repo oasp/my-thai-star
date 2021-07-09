@@ -17,13 +17,6 @@ services:
     image: my-thai-star/angular:latest
     networks:
       - my-thai-star
-  java:
-    build: 'java/'
-    restart: always
-    container_name: 'mts_java'
-    image: my-thai-star/java:latest
-    networks:
-      - my-thai-star
 networks:
   my-thai-star:
     driver: bridge
