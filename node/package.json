@@ -34,7 +34,7 @@
     "@nestjs/terminus": "7.0.0",
     "@nestjs/typeorm": "^7.0.0",
     "bcrypt": "^4.0.1",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.11.1",
     "handlebars": "^4.7.6",
     "helmet": "^3.22.0",
