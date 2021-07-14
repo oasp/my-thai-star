@@ -1,10 +1,8 @@
 package com.devonfw.application.mtsj.general.common.impl.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -82,18 +80,14 @@ public class BaseUserDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    UserProfile principal = retrievePrincipal(username);
-    Set<GrantedAuthority> authorities = getAuthorities(principal);
     try {
-      // Retrieve user from H2 in memory database instead from AuthenticationManagerBuilder
+      UserProfile principal = this.usermanagement.findUserProfileByLogin(username);
       this.user = this.userRepository.findByUsername(username);
-      UserData userData = new UserData(this.user.getUsername(), this.user.getPassword(), authorities);
+      UserData userData = new UserData(this.user.getUsername(), this.user.getPassword(), getAuthorities(principal));
       userData.setUserProfile(principal);
       return userData;
     } catch (Exception e) {
-      UsernameNotFoundException exception = new UsernameNotFoundException("Authentication failed.", e);
-      LOG.warn("Failed to get user {}.", username, exception);
-      throw exception;
+      throw new UsernameNotFoundException("Authentication failed, for user:" + username, e);
     }
   }
 
@@ -106,67 +100,15 @@ public class BaseUserDetailsService implements UserDetailsService {
    */
   protected Set<GrantedAuthority> getAuthorities(UserProfile principal) throws AuthenticationException {
 
-    if (principal == null) {
-      LOG.warn("Principal must not be null.");
-      throw new IllegalArgumentException();
-    }
-    // determine granted authorities for spring-security...
-    Set<GrantedAuthority> authorities = new HashSet<>();
-    Collection<String> accessControlIds = this.principalAccessControlProvider.getAccessControlIds(principal);
     Set<AccessControl> accessControlSet = new HashSet<>();
-    for (String id : accessControlIds) {
-      boolean success = this.accessControlProvider.collectAccessControls(id, accessControlSet);
-      if (!success) {
-        LOG.warn("Undefined access control {}.", id);
-      }
-    }
-    for (AccessControl accessControl : accessControlSet) {
-      authorities.add(new AccessControlGrantedAuthority(accessControl));
-    }
-    return authorities;
-  }
+    Set<String> undefinedIds = this.principalAccessControlProvider.getAccessControlIds(principal).stream()
+        .filter(id -> !this.accessControlProvider.collectAccessControls(id, accessControlSet))
+        .collect(Collectors.toUnmodifiableSet());
 
-  public Set<GrantedAuthority> getAuthoritiesFromList(/* UserProfile principal */List<String> roles)
-      throws AuthenticationException {
+    undefinedIds.forEach(id -> LOG.warn("Undefined access control {}.", id));
 
-    // if (principal == null) {
-    // LOG.warn("Principal must not be null.");
-    // throw new IllegalArgumentException();
-    // }
-    // determine granted authorities for spring-security...
-    Set<GrantedAuthority> authorities = new HashSet<>();
-    List<String> listOfRoles = new ArrayList<>();
-
-    for (String role : roles) {
-      listOfRoles.add(role);
-    }
-    Collection<String> accessControlIds = listOfRoles/* getAccessControlIds(principal) */;
-    Set<AccessControl> accessControlSet = new HashSet<>();
-    for (String id : accessControlIds) {
-      boolean success = this.accessControlProvider.collectAccessControls(id, accessControlSet);
-      if (!success) {
-        LOG.warn("Undefined access control {}.", id);
-      }
-    }
-    for (AccessControl accessControl : accessControlSet) {
-      authorities.add(new AccessControlGrantedAuthority(accessControl));
-    }
-    return authorities;
-  }
-
-  /**
-   * @param username The {@code username} for which the {@code UserProfile} will be queried.
-   * @return An instance of type {@link UserProfile} obtained by querying the {@code username}.
-   */
-  protected UserProfile retrievePrincipal(String username) {
-
-    try {
-      return this.usermanagement.findUserProfileByLogin(username);
-    } catch (RuntimeException e) {
-      UsernameNotFoundException exception = new UsernameNotFoundException("Authentication failed.", e);
-      LOG.warn("Failed to get user {}.", username, exception);
-      throw exception;
-    }
+    return accessControlSet.stream().map(accessControl -> new AccessControlGrantedAuthority(accessControl))
+        .collect(Collectors.toUnmodifiableSet());
   }
 
   /**

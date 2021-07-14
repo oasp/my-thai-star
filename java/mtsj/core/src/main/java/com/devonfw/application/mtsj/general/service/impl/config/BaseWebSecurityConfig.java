@@ -2,7 +2,6 @@ package com.devonfw.application.mtsj.general.service.impl.config;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,10 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import com.devonfw.application.mtsj.general.common.base.AdvancedDaoAuthenticationProvider;
 import com.devonfw.application.mtsj.general.common.base.JWTAuthenticationFilter;
@@ -22,6 +17,7 @@ import com.devonfw.application.mtsj.general.common.base.JWTLoginFilter;
 import com.devonfw.application.mtsj.general.common.base.TwoFactorFilter;
 import com.devonfw.application.mtsj.general.common.impl.security.BaseUserDetailsService;
 import com.devonfw.application.mtsj.general.common.impl.security.twofactor.TwoFactorAuthenticationProvider;
+import com.devonfw.module.security.common.api.config.WebSecurityConfigurer;
 
 /**
  * This type serves as a base class for extensions of the {@code WebSecurityConfigurerAdapter} and provides a default
@@ -31,8 +27,6 @@ import com.devonfw.application.mtsj.general.common.impl.security.twofactor.TwoFa
  */
 public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Value("${security.cors.enabled}")
-  boolean corsEnabled = true;
 
   @Inject
   private BaseUserDetailsService userDetailsService;
@@ -63,23 +57,8 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
   @Inject
   private TwoFactorAuthenticationProvider twoFactorAuthenticationProvider;
 
-  private CorsFilter getCorsFilter() {
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    config.addAllowedOrigin("*");
-    config.addAllowedHeader("*");
-    config.addAllowedMethod("OPTIONS");
-    config.addAllowedMethod("HEAD");
-    config.addAllowedMethod("GET");
-    config.addAllowedMethod("PUT");
-    config.addAllowedMethod("POST");
-    config.addAllowedMethod("DELETE");
-    config.addAllowedMethod("PATCH");
-    source.registerCorsConfiguration("/**", config);
-    return new CorsFilter(source);
-  }
+  @Inject
+  private WebSecurityConfigurer webSecurityConfigurer;
 
   /**
    * Configure spring security to enable login with JWT.
@@ -95,6 +74,11 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
     "/services/rest/bookingmanagement/v1/invitedguest/decline/**",
     "/services/rest/ordermanagement/v1/order/cancelorder/**" };
 
+    // disable CSRF protection by default, use csrf starter to override.
+    http = http.csrf().disable();
+    // load starters as pluggins.
+    http = this.webSecurityConfigurer.configure(http);
+
     http.userDetailsService(this.userDetailsService).csrf().disable().exceptionHandling().and().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
         .antMatchers(unsecuredResources).permitAll().antMatchers(HttpMethod.POST, "/login").permitAll().anyRequest()
@@ -107,10 +91,6 @@ public abstract class BaseWebSecurityConfig extends WebSecurityConfigurerAdapter
             UsernamePasswordAuthenticationFilter.class)
         // other requests are filtered to check the presence of JWT in header
         .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-    if (this.corsEnabled) {
-      http.addFilterBefore(getCorsFilter(), CsrfFilter.class);
-    }
 
   }
 

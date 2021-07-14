@@ -40,17 +40,49 @@ public class PredictionmanagementImpl extends AbstractComponentFacade implements
    */
   private static final Logger LOG = LoggerFactory.getLogger(PredictionmanagementImpl.class);
 
-  @Inject
   private PredictionDayDataRepository predictionDayDataRepository;
 
+  /**
+   * @param predictionDayDataRepository new value of {@link #getpredictionDayDataRepository}.
+   */
   @Inject
+  public void setPredictionDayDataRepository(PredictionDayDataRepository predictionDayDataRepository) {
+
+    this.predictionDayDataRepository = predictionDayDataRepository;
+  }
+
   private PredictionModelDataRepository predictionModelDataRepository;
 
+  /**
+   * @param predictionModelDataRepository new value of {@link #getpredictionModelDataRepository}.
+   */
   @Inject
+  public void setPredictionModelDataRepository(PredictionModelDataRepository predictionModelDataRepository) {
+
+    this.predictionModelDataRepository = predictionModelDataRepository;
+  }
+
   private DishRepository dishRepository;
 
-  @PersistenceContext
+  /**
+   * @param dishRepository new value of {@link #getdishRepository}.
+   */
+  @Inject
+  public void setDishRepository(DishRepository dishRepository) {
+
+    this.dishRepository = dishRepository;
+  }
+
   private EntityManager entityManager;
+
+  /**
+   * @param entityManager new value of {@link #getentityManager}.
+   */
+  @PersistenceContext
+  public void setEntityManager(EntityManager entityManager) {
+
+    this.entityManager = entityManager;
+  }
 
   /**
    * The constructor.
