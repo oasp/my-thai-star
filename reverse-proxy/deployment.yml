@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: devonfw-demo-edge
+  name: devonfw-demo-edge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devonfw-demo-edge
+  template:
+    metadata:
+      labels:
+        app: devonfw-demo-edge
+    spec:
+      containers:
+      - name: devonfw-demo-edge
+        image: INSERT_IMAGE_HERE
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+            httpGet:
+                path: /
+                port: 80

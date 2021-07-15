@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: devonfw-demo-java
+  name: devonfw-demo-java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devonfw-demo-java
+  template:
+    metadata:
+      labels:
+        app: devonfw-demo-java
+    spec:
+      containers:
+      - name: devonfw-demo-java
+        image: INSERT_IMAGE_HERE
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+            initialDelaySeconds: 120
+            httpGet:
+                path: /
+                port: 8080
