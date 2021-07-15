@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.devonfw.java.mtsj</groupId>
@@ -38,10 +39,10 @@
       <groupId>com.devonfw.java.modules</groupId>
       <artifactId>devon4j-beanmapping-orika</artifactId>
     </dependency>
-	<dependency>
-	  <groupId>org.apache.commons</groupId>
-	  <artifactId>commons-lang3</artifactId>
-	</dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.devonfw.java.modules</groupId>
       <artifactId>devon4j-security</artifactId>
@@ -61,9 +62,7 @@
       <artifactId>devon4j-web</artifactId>
     </dependency>
     <!-- TODO remove below dependency after checking -->
-    <!-- <dependency>
-      <groupId>com.devonfw.java.modules</groupId>
-      <artifactId>devon4j-jpa</artifactId>
+    <!-- <dependency> <groupId>com.devonfw.java.modules</groupId> <artifactId>devon4j-jpa</artifactId>
       </dependency> -->
 
     <dependency>
@@ -116,23 +115,19 @@
     </dependency>
 
     <!-- Spring Security -->
-    <!--
-      <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-      </dependency>
+    <!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-web</artifactId>
+      </dependency> <dependency> <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId> </dependency> -->
 
-      <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
-      </dependency>
-    -->
+    <dependency>
+      <groupId>com.devonfw.java.starters</groupId>
+      <artifactId>devon4j-starter-security-jwt</artifactId>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
     <dependency>
-      <groupId>io.jsonwebtoken</groupId>
-      <artifactId>jjwt</artifactId>
-      <version>0.7.0</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
 
     <!-- for Object Relational Mapping (JPA/Hibernate) -->
@@ -153,7 +148,7 @@
       <artifactId>${mts.database.artifactId}</artifactId>
       <version>${mts.database.version}</version>
     </dependency>
-    <dependency>      <!-- Need for SAP Hana-->
+    <dependency>      <!-- Need for SAP Hana -->
       <groupId>com.sap.cloud.db.jdbc</groupId>
       <artifactId>ngdbc</artifactId>
       <version>2.3.48</version>
@@ -191,24 +186,28 @@
         </exclusion>
       </exclusions>
     </dependency>
-    
-     <!-- Only required if you want to call external REST services within your Java application -->
+
+    <!-- Only required if you want to call external REST services within
+      your Java application -->
     <dependency>
       <groupId>com.devonfw.java.starters</groupId>
       <artifactId>devon4j-starter-cxf-client-rest</artifactId>
     </dependency>
-    <!-- Only required if you want to call external SOAP services within your Java application -->
+    <!-- Only required if you want to call external SOAP services within
+      your Java application -->
     <dependency>
       <groupId>com.devonfw.java.starters</groupId>
       <artifactId>devon4j-starter-cxf-client-ws</artifactId>
     </dependency>
 
-    <!-- Only required if you want to provide REST services within your Java application -->
+    <!-- Only required if you want to provide REST services within your Java
+      application -->
     <dependency>
       <groupId>com.devonfw.java.starters</groupId>
       <artifactId>devon4j-starter-cxf-server-rest</artifactId>
     </dependency>
-    <!-- Only required if you want to provide SOAP services within your Java application -->
+    <!-- Only required if you want to provide SOAP services within your Java
+      application -->
     <dependency>
       <groupId>com.devonfw.java.starters</groupId>
       <artifactId>devon4j-starter-cxf-server-ws</artifactId>

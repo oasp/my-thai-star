@@ -1,12 +1,16 @@
 package com.devonfw.application.mtsj.general.common.base;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +23,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.devonfw.application.mtsj.general.common.api.datatype.Role;
 import com.devonfw.application.mtsj.general.common.api.to.UserDetailsClientTo;
+import com.devonfw.module.security.jwt.common.impl.JwtConfigProperties;
+import com.devonfw.module.security.keystore.common.api.KeyStoreAccess;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -27,10 +34,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * Service class for JWT token managing
  *
  */
+@Named
 public class TokenAuthenticationService {
 
   /** Logger instance. */
   private static final Logger LOG = LoggerFactory.getLogger(TokenAuthenticationService.class);
+
+  @Inject
+  private KeyStoreAccess keyStoreAccess;
+
+  @Inject
+  private JwtConfigProperties jwtConfig;
 
   static final String ISSUER = "MyThaiStarApp";
 
@@ -58,6 +72,8 @@ public class TokenAuthenticationService {
 
   static final String CLAIM_ROLES = "roles";
 
+  static final String OTP = "OTP";
+
   static void addAllowedHeader(HttpServletResponse res) {
 
     res.addHeader(EXPOSE_HEADERS, HEADER_STRING + ", " + HEADER_OTP);
@@ -82,10 +98,10 @@ public class TokenAuthenticationService {
    * @param res the {@HttpServletResponse}
    * @param auth the {@Authentication} object with the user credentials
    */
-  static void addRequiredAuthentication(HttpServletResponse res, Authentication auth) {
+  static void addRequiredAuthentication(HttpServletResponse res) {
 
     // Add possible required authentication factors into the header
-    res.addHeader(HEADER_OTP, auth.getDetails().toString());
+    res.addHeader(HEADER_OTP, "OTP");
   }
 
   /**
@@ -156,17 +172,27 @@ public class TokenAuthenticationService {
    * @param token the JWT token
    * @return the {@link UserDetailsClientTo} object
    */
-  public static UserDetailsClientTo getUserdetailsFromToken(String token) {
+  public UserDetailsClientTo getUserdetailsFromToken(String token) {
 
     UserDetailsClientTo userDetails = new UserDetailsClientTo();
     try {
-      String user = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody()
-          .getSubject();
 
-      List<String> roles = getRolesFromToken(token);
+      PublicKey key = this.keyStoreAccess.getPublicKey(this.jwtConfig.getAlias());
+
+      Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token.replace(TOKEN_PREFIX, "")).getBody();
+
+      String user = claims.getSubject();
+
       if (user != null) {
         userDetails.setName(user);
       }
+
+      StringTokenizer stringToken = new StringTokenizer(claims.get(CLAIM_ROLES, String.class), ",");
+      List<String> roles = new ArrayList<>();
+      while (stringToken.hasMoreTokens()) {
+        roles.add(stringToken.nextToken());
+      }
+
       if (!roles.isEmpty()) {
         if (roles.get(0).equalsIgnoreCase(Role.WAITER.getName())) {
           userDetails.setRole(Role.WAITER);

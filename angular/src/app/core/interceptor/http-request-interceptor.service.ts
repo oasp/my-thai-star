@@ -22,6 +22,7 @@ export class HttpRequestInterceptorService implements HttpInterceptor {
     return this.store.select(fromAuth.getToken).pipe(
       first(),
       flatMap((token) => {
+		token = token.replace('Bearer', '');
         const authReq = !!token
           ? req.clone({
               setHeaders: { Authorization: 'Bearer ' + token },
