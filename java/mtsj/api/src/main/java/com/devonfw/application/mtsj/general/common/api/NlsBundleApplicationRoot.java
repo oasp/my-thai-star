@@ -17,4 +17,22 @@ public interface NlsBundleApplicationRoot extends NlsBundle {
   @NlsBundleMessage("There is currently no user logged in")
   NlsMessage errorNoActiveUser();
 
+  @NlsBundleMessage("The booking can not be cancelled.")
+  NlsMessage errorCancelInviteNotAllowed();
+
+  @NlsBundleMessage("The invitation does not exist")
+  NlsMessage errorNoInvite();
+
+  @NlsBundleMessage("The order can not be cancelled.")
+  NlsMessage errorCancelNotAllowed();
+
+  @NlsBundleMessage("The booking does not exist")
+  NlsMessage errorNoBooking();
+
+  @NlsBundleMessage("The order for this booking already exist. Please cancel the order before create a new one.")
+  NlsMessage erroOrderAlreadyExist();
+
+  @NlsBundleMessage("Not a valid token")
+  NlsMessage errorWrongToken();
+
 }

@@ -28,4 +28,9 @@ public class NoActiveUserException extends ApplicationBusinessException {
     super(cause, createBundle(NlsBundleApplicationRoot.class).errorNoActiveUser());
   }
 
+  @Override
+	public boolean isTechnical() {
+
+		return false;
+	}
 }
